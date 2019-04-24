@@ -1,0 +1,58 @@
+"C:\\qnx660\\host\\win32\\x86\\usr\\bin\\make.exe" -k CPULIST=arm VARIANTLIST=g all --file=C:/Users/hm-gaul/AppData/Local/Temp/QMakefile15561004758037520181974866951662.tmp 
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Carm -fMakefile all
+make.exe[1]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Co-le-v7-g -fMakefile all
+make.exe[2]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -c  -Wc,-Wall             -I. -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/le.v7 -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm -IH:/Benutzer/ide-5.0-workspace/Aufgabe1 -IC:/qnx660/target/qnx6/usr/include    -EL      -g        -DVARIANT_le -DVARIANT_v7 -DVARIANT_g -DBUILDENV_qss  H:/Benutzer/ide-5.0-workspace/Aufgabe1/Aufgabe1.c 
+C:/qnx660/host/win32/x86/usr/bin/rm -f  H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -Wl,--no-keep-memory     -o H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g    Aufgabe1.o   -L . -L C:/qnx660/target/qnx6/armle-v7/lib -L C:/qnx660/target/qnx6/armle-v7/usr/lib  -Wl,--rpath-link . -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/lib -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/usr/lib    -EL      -g         
+make.exe[2]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[1]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+"C:\\qnx660\\host\\win32\\x86\\usr\\bin\\make.exe" -k CPULIST=arm VARIANTLIST=g all --file=C:/Users/hm-gaul/AppData/Local/Temp/QMakefile15561004830102186309315434876660.tmp 
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Carm -fMakefile all
+make.exe[1]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Co-le-v7-g -fMakefile all
+make.exe[2]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[2]: Nothing to be done for `all'.
+make.exe[2]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[1]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+"C:\\qnx660\\host\\win32\\x86\\usr\\bin\\make.exe" -k CPULIST=arm VARIANTLIST=g all --file=C:/Users/hm-gaul/AppData/Local/Temp/QMakefile15561009854404491168994956341583.tmp 
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Carm -fMakefile all
+make.exe[1]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Co-le-v7-g -fMakefile all
+make.exe[2]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -c  -Wc,-Wall             -I. -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/le.v7 -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm -IH:/Benutzer/ide-5.0-workspace/Aufgabe1 -IC:/qnx660/target/qnx6/usr/include    -EL      -g        -DVARIANT_le -DVARIANT_v7 -DVARIANT_g -DBUILDENV_qss  H:/Benutzer/ide-5.0-workspace/Aufgabe1/Aufgabe1.c 
+C:/qnx660/host/win32/x86/usr/bin/rm -f  H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -Wl,--no-keep-memory     -o H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g    Aufgabe1.o   -L . -L C:/qnx660/target/qnx6/armle-v7/lib -L C:/qnx660/target/qnx6/armle-v7/usr/lib  -Wl,--rpath-link . -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/lib -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/usr/lib    -EL      -g         
+make.exe[2]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[1]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+"C:\\qnx660\\host\\win32\\x86\\usr\\bin\\make.exe" -k CPULIST=arm VARIANTLIST=g all --file=C:/Users/hm-gaul/AppData/Local/Temp/QMakefile15561010113697380865652161164607.tmp 
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Carm -fMakefile all
+make.exe[1]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Co-le-v7-g -fMakefile all
+make.exe[2]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -c  -Wc,-Wall             -I. -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/le.v7 -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm -IH:/Benutzer/ide-5.0-workspace/Aufgabe1 -IC:/qnx660/target/qnx6/usr/include    -EL      -g        -DVARIANT_le -DVARIANT_v7 -DVARIANT_g -DBUILDENV_qss  H:/Benutzer/ide-5.0-workspace/Aufgabe1/Aufgabe1.c 
+C:/qnx660/host/win32/x86/usr/bin/rm -f  H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -Wl,--no-keep-memory     -o H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g    Aufgabe1.o   -L . -L C:/qnx660/target/qnx6/armle-v7/lib -L C:/qnx660/target/qnx6/armle-v7/usr/lib  -Wl,--rpath-link . -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/lib -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/usr/lib    -EL      -g         
+make.exe[2]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[1]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+"C:\\qnx660\\host\\win32\\x86\\usr\\bin\\make.exe" -k CPULIST=arm VARIANTLIST=g all --file=C:/Users/hm-gaul/AppData/Local/Temp/QMakefile15561016160109148787858269440741.tmp 
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Carm -fMakefile all
+make.exe[1]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Co-le-v7-g -fMakefile all
+make.exe[2]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -c  -Wc,-Wall             -I. -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/le.v7 -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm -IH:/Benutzer/ide-5.0-workspace/Aufgabe1 -IC:/qnx660/target/qnx6/usr/include    -EL      -g        -DVARIANT_le -DVARIANT_v7 -DVARIANT_g -DBUILDENV_qss  H:/Benutzer/ide-5.0-workspace/Aufgabe1/Aufgabe1.c 
+C:/qnx660/host/win32/x86/usr/bin/rm -f  H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -Wl,--no-keep-memory     -o H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g    Aufgabe1.o   -L . -L C:/qnx660/target/qnx6/armle-v7/lib -L C:/qnx660/target/qnx6/armle-v7/usr/lib  -Wl,--rpath-link . -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/lib -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/usr/lib    -EL      -g         
+make.exe[2]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[1]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+"C:\\qnx660\\host\\win32\\x86\\usr\\bin\\make.exe" -k CPULIST=arm VARIANTLIST=g all --file=C:/Users/hm-gaul/AppData/Local/Temp/QMakefile15561024222667927830362781423936.tmp 
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Carm -fMakefile all
+make.exe[1]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
+C:/qnx660/host/win32/x86/usr/bin/make.exe -j 1 -Co-le-v7-g -fMakefile all
+make.exe[2]: Entering directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -c  -Wc,-Wall             -I. -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/le.v7 -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g -IH:/Benutzer/ide-5.0-workspace/Aufgabe1/arm -IH:/Benutzer/ide-5.0-workspace/Aufgabe1 -IC:/qnx660/target/qnx6/usr/include    -EL      -g        -DVARIANT_le -DVARIANT_v7 -DVARIANT_g -DBUILDENV_qss  H:/Benutzer/ide-5.0-workspace/Aufgabe1/Aufgabe1.c 
+C:/qnx660/host/win32/x86/usr/bin/rm -f  H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g
+C:/qnx660/host/win32/x86/usr/bin/qcc -Vgcc_ntoarmv7 -Wl,--no-keep-memory     -o H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g/Aufgabe1_g    Aufgabe1.o   -L . -L C:/qnx660/target/qnx6/armle-v7/lib -L C:/qnx660/target/qnx6/armle-v7/usr/lib  -Wl,--rpath-link . -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/lib -Wl,--rpath-link C:/qnx660/target/qnx6/armle-v7/usr/lib    -EL      -g         
+make.exe[2]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm/o-le-v7-g'
+make.exe[1]: Leaving directory `H:/Benutzer/ide-5.0-workspace/Aufgabe1/arm'
