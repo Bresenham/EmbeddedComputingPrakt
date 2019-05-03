@@ -12,7 +12,7 @@
 #include <time.h>
 #include <sys/neutrino.h>
 
-void runOneMillisecond() {
+void* runOneMillisecond(void *arg) {
 	while (true) {
 		/* Get time before sleep to compare it afterwards */
 		timespec time_before_sleep;
