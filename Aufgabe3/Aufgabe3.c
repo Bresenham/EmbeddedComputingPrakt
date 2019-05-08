@@ -1,9 +1,3 @@
-/*
- *
- * Idee zu Aufgabe 2a)
- *
- */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
@@ -15,21 +9,22 @@
 
 double time_in_ms_for_one_million = 0;
 
+void useless(unsigned long runs) {
+	unsigned long sum = 0;
+	unsigned long i = 0;
+	for(i = 0; i < runs; i++) {
+		sum += i;
+	}
+}
+
 void waste_msecs(unsigned int msecs) {
 	unsigned long runs = (unsigned long)(time_in_ms_for_one_million / msecs);
 	useless(runs);
 }
 
-void useless(unsigned long runs) {
-	unsigned long sum = 0;
-	for (unsigned long i = 0; i < runs; i++) {
-		sum += i;
-	}
-}
-
 double measure_useless_for_one_million() {
 	/* Calculate time for 1.000.000 runs */
-	timespec start_time, end_time;
+	struct timespec start_time, end_time;
 	clock_gettime(CLOCK_REALTIME, &start_time);
 
 	useless(1000 * 1000);
@@ -44,10 +39,10 @@ double measure_useless_for_one_million() {
 
 void* thread_function(void *arg) {
 	/* Zuvor übergebenes pthread_attr_t casten */
-	pthread_attr_t self = (*pthread_attr_t)(arg);
+	pthread_t self = pthread_self();
 
-	sched_param thread_sched;
-	pthread_getschedparam(&self, &thread_sched);
+	struct sched_param thread_sched;
+	pthread_getschedparam(&self, NULL, &thread_sched);
 	printf("My priority is %d\r\n", thread_sched.sched_priority);
 
 	double spent = measure_useless_for_one_million();
@@ -57,17 +52,19 @@ void* thread_function(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
+	int i = 0;
 	double spent = measure_useless_for_one_million();
 	time_in_ms_for_one_million = spent;
 
 	/* Measure accuracy of waste_msecs */
+	struct timespec start_time, end_time;
 	unsigned int msecs_to_wait = 1;
-	for (int i = 0; i < 10; i++) {
+	for(i = 0; i < 10; i++) {
 		clock_gettime(CLOCK_REALTIME, &start_time);
 		waste_msecs(msecs_to_wait);
 		clock_gettime(CLOCK_REALTIME, &end_time);
 
-		unsigned long difference_in_ms = (unsigned long)(end_time.tv_nsec - start_time.tv_nsec) & (1000.0 * 1000.0);
+		unsigned long difference_in_ms = (unsigned long)(end_time.tv_nsec - start_time.tv_nsec) / (1000.0 * 1000.0);
 		printf("Expected to wait %dms, but actually waited %d\r\n", msecs_to_wait, difference_in_ms);
 	}
 
@@ -89,9 +86,9 @@ int main(int argc, char *argv[]) {
 	int max_priority = sched_get_priority_max(SCHED_FIFO);
 
 	/* Aktuelle Priorität des Threads erfragen */
-	sched_param thread_sched;
+	struct sched_param thread_sched;
 	pthread_attr_getschedparam(&thread_attr, &thread_sched);
-	
+
 	/* Nur die Priorität ändern und zurückschreiben */
 	thread_sched.sched_priority = max_priority;
 	pthread_attr_setschedparam(&thread_attr, &thread_sched);
@@ -104,7 +101,7 @@ int main(int argc, char *argv[]) {
 
 	pthread_t thread;
 	/* Keine Ahnung, ob man hier das pthread_attr_t übergeben soll, aber in der Thread-Funktion habe ich es ja dann nicht mehr? */
-	const int create_thread_result = pthread_create(&thread, &thread_attr, &thread_function, (void*)&pthread_attr_t);
+	const int create_thread_result = pthread_create(&thread, &thread_attr, &thread_function, NULL);
 	if (create_thread_result != 0) {
 		printf("create_thread_result: %s\n", strerror(create_thread_result));
 		exit(-1);

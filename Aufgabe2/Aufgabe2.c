@@ -7,6 +7,7 @@
 #include <sys/neutrino.h>
 
 void* runOneMillisecond(void *arg) {
+	while(1) {
 	/* Get time before sleep to compare it afterwards */
 	struct timespec time_before_sleep;
 	// printf("TIME BEFORE SLEEP: %ds %dns\r\n", time_before_sleep.tv_sec, time_before_sleep.tv_nsec);
@@ -39,10 +40,10 @@ void* runOneMillisecond(void *arg) {
 	if(clk_return != 0) {
 		printf("Clock_gettime returned %d\r\n", clk_return);
 	}
-	unsigned long sleptMs = (time_after_sleep.tv_nsec - time_before_sleep.tv_nsec) / (1000 * 1000);
-	printf("SLEPT %dms\r\n", sleptMs);
+	double sleptMs = (time_after_sleep.tv_nsec - time_before_sleep.tv_nsec) / (1000.0 * 1000.0);
+	printf("SLEPT %fms\r\n", sleptMs);
 
-
+	}
 	return NULL;
 }
 
