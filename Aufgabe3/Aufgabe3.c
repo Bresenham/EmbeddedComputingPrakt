@@ -38,7 +38,7 @@ double measure_useless_for_one_million() {
 }
 
 void* thread_function(void *arg) {
-	/* Zuvor übergebenes pthread_attr_t casten */
+	/* Zuvor uebergebenes pthread_attr_t casten */
 	pthread_t self = pthread_self();
 
 	struct sched_param thread_sched;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 
 
 	/*
-	 Teil b) mit Thread-Priorität
+	 Teil b) mit Thread-Prioritaet
 	 */
 	pthread_attr_t thread_attr;
 	const int attr_init_result = pthread_attr_init(&thread_attr);
@@ -85,11 +85,11 @@ int main(int argc, char *argv[]) {
 	/* Welche Policy soll hier verwendet werden? */
 	int max_priority = sched_get_priority_max(SCHED_FIFO);
 
-	/* Aktuelle Priorität des Threads erfragen */
+	/* Aktuelle Prioritaet des Threads erfragen */
 	struct sched_param thread_sched;
 	pthread_attr_getschedparam(&thread_attr, &thread_sched);
 
-	/* Nur die Priorität ändern und zurückschreiben */
+	/* Nur die Prioritaet aendern und zurueckschreiben */
 	thread_sched.sched_priority = max_priority;
 	pthread_attr_setschedparam(&thread_attr, &thread_sched);
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	pthread_t thread;
-	/* Keine Ahnung, ob man hier das pthread_attr_t übergeben soll, aber in der Thread-Funktion habe ich es ja dann nicht mehr? */
+	/* Keine Ahnung, ob man hier das pthread_attr_t uebergeben soll, aber in der Thread-Funktion habe ich es ja dann nicht mehr? */
 	const int create_thread_result = pthread_create(&thread, &thread_attr, &thread_function, NULL);
 	if (create_thread_result != 0) {
 		printf("create_thread_result: %s\n", strerror(create_thread_result));
