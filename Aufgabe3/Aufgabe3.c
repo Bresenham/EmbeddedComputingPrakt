@@ -18,7 +18,7 @@ void useless(unsigned long runs) {
 }
 
 void waste_msecs(unsigned int msecs) {
-	unsigned long runs = (unsigned long)(time_in_ms_for_one_million / msecs);
+	unsigned long runs = ((double)(msecs) / time_in_ms_for_one_million) * 1000 * 1000;
 	useless(runs);
 }
 
