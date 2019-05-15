@@ -8,41 +8,43 @@
 
 void* runOneMillisecond(void *arg) {
 	while(1) {
-	/* Get time before sleep to compare it afterwards */
-	struct timespec time_before_sleep;
-	// printf("TIME BEFORE SLEEP: %ds %dns\r\n", time_before_sleep.tv_sec, time_before_sleep.tv_nsec);
-	int clk_return = clock_gettime(CLOCK_REALTIME, &time_before_sleep);
-	if(errno != EOK) {
-		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-	if(clk_return != 0) {
-		printf("Clock_gettime returned %d\r\n", clk_return);
-	}
+		/* Get time before sleep to compare it afterwards */
+		struct timespec time_before_sleep;
+		// printf("TIME BEFORE SLEEP: %ds %dns\r\n", time_before_sleep.tv_sec, time_before_sleep.tv_nsec);
+		int clk_return = clock_gettime(CLOCK_REALTIME, &time_before_sleep);
+		if(errno != EOK) {
+			printf("Error: %s\r\n", strerror(errno));
+			exit(-1);
+		}
+		if(clk_return != 0) {
+			printf("Clock_gettime returned %d\r\n", clk_return);
+			exit(-1);
+		}
 
-	struct timespec time_to_wait, time_after_sleep;
-	time_to_wait.tv_nsec = 1000 * 1000; /* Wait 1ms */
-	const int clk_nanosleep_return = clock_nanosleep(CLOCK_REALTIME, 0, &time_to_wait, NULL);
-	if(errno != EOK) {
-		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-	if(clk_nanosleep_return != 0) {
-		printf("Clock_nanosleep returned %d\r\n", clk_nanosleep_return);
-	}
+		struct timespec time_to_wait, time_after_sleep;
+		time_to_wait.tv_nsec = 1000 * 1000; /* Wait 1ms */
+		const int clk_nanosleep_return = clock_nanosleep(CLOCK_REALTIME, 0, &time_to_wait, NULL);
+		if(errno != EOK) {
+			printf("Error: %s\r\n", strerror(errno));
+			exit(-1);
+		}
+		if(clk_nanosleep_return != 0) {
+			printf("Clock_nanosleep returned %d\r\n", clk_nanosleep_return);
+			exit(-1);
+		}
 
-	/* Get time after sleep as soon as thread weaks up */
-	clk_return = clock_gettime(CLOCK_REALTIME, &time_after_sleep);
-	if(errno != EOK) {
-		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-	if(clk_return != 0) {
-		printf("Clock_gettime returned %d\r\n", clk_return);
-	}
-	double sleptMs = (time_after_sleep.tv_nsec - time_before_sleep.tv_nsec) / (1000.0 * 1000.0);
-	printf("SLEPT %fms\r\n", sleptMs);
-
+		/* Get time after sleep as soon as thread weaks up */
+		clk_return = clock_gettime(CLOCK_REALTIME, &time_after_sleep);
+		if(errno != EOK) {
+			printf("Error: %s\r\n", strerror(errno));
+			exit(-1);
+		}
+		if(clk_return != 0) {
+			printf("Clock_gettime returned %d\r\n", clk_return);
+			exit(-1);
+		}
+		double sleptMs = (time_after_sleep.tv_nsec - time_before_sleep.tv_nsec) / (1000.0 * 1000.0);
+		printf("SLEPT %fms\r\n", sleptMs);
 	}
 	return NULL;
 }
@@ -57,6 +59,7 @@ void changeSystemTick(unsigned int microsecs) {
 	}
 	if(clock_period_return != 0) {
 		printf("Clock period error %s\r\n", clock_period_return);
+		exit(-1);
 	}
 	printf("Clock period before changing is %dus\r\n", (get_period.nsec / (1000)));
 
@@ -71,6 +74,7 @@ void changeSystemTick(unsigned int microsecs) {
 	}
 	if(clock_period_return != 0) {
 		printf("Clock period error %s\r\n", clock_period_return);
+		exit(-1);
 	}
 
 	/* Measure time resolution again */
@@ -81,6 +85,7 @@ void changeSystemTick(unsigned int microsecs) {
 	}
 	if(clock_period_return != 0) {
 		printf("Clock period error %s\r\n", clock_period_return);
+		exit(-1);
 	}
 	printf("Clock period after changing is %dus\r\n", (get_period.nsec / (1000)));
 }
