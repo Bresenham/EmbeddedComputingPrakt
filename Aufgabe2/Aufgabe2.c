@@ -59,7 +59,7 @@ void changeSystemTick(unsigned int microsecs) {
 }
 
 int main(int argc, char *argv[]) {
-	changeSystemTick(1500);
+	changeSystemTick(10);
 
 	pthread_attr_t thread_attr;
 	const int attr_init_result = pthread_attr_init(&thread_attr);
