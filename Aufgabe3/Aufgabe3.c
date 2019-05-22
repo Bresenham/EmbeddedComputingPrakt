@@ -83,6 +83,15 @@ int main(int argc, char *argv[]) {
 	int i = 0;
 	double spent = 0.0;
 
+	/* Get main-thread priority */
+	struct sched_param thread_sched;
+	int ret_sched = pthread_getschedparam(pthread_self(), NULL, &thread_sched);
+	if(ret_sched != 0) {
+		printf("pthread_getschedparam returned %d\r\n", ret_sched);
+		exit(-1);
+	}
+	printf("Main thread priority is %d\r\n", thread_sched.sched_priority);
+
 	/* Measure accuracy of measure_useless_for_one_million */
 	for(i = 0; i <= 99; i++) {
 		const double current = measure_useless_for_one_million();
@@ -109,15 +118,7 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
-	// Welche Policy soll hier verwendet werden?
-	int max_priority = sched_get_priority_max(SCHED_FIFO);
-	if(errno != EOK) {
-		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-
 	// Aktuelle Prioritaet des Threads erfragen
-	struct sched_param thread_sched;
 	ret = pthread_attr_getschedparam(&thread_attr, &thread_sched);
 	if(ret != 0) {
 		printf("pthread_attr_getschedparam returned %d\r\n", ret);
@@ -125,7 +126,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Nur die Prioritaet aendern und zurueckschreiben
-	thread_sched.sched_priority = max_priority;
+	thread_sched.sched_priority = 253;
 	ret = pthread_attr_setschedparam(&thread_attr, &thread_sched);
 	if(ret != 0) {
 		printf("pthread_attr_setschedparam returned %d\r\n", ret);
