@@ -8,9 +8,11 @@
 #include <errno.h>
 #include <sched.h>
 
-double time_in_ms_for_one_million = 0;
+double fac = 1.0;
 
-void useless(unsigned long runs) {
+void waste_msecs(unsigned int msecs) {
+	unsigned long runs = (unsigned long)(1000000 * fac * msecs);
+
 	unsigned long sum = 0;
 	unsigned long i = 0;
 	for(i = 0; i < runs; i++) {
@@ -18,12 +20,7 @@ void useless(unsigned long runs) {
 	}
 }
 
-void waste_msecs(unsigned int msecs) {
-	unsigned long runs = ((double)(msecs) / time_in_ms_for_one_million) * 1000 * 1000;
-	useless(runs);
-}
-
-double measure_useless_for_one_million() {
+void measure_useless_for_one_million(unsigned int msec) {
 	/* Calculate time for 1.000.000 runs */
 	struct timespec start_time, end_time;
 	int clk_return = clock_gettime(CLOCK_REALTIME, &start_time);
@@ -36,7 +33,7 @@ double measure_useless_for_one_million() {
 		exit(-1);
 	}
 
-	useless(1000 * 1000);
+	waste_msecs(msec);
 
 	clk_return = clock_gettime(CLOCK_REALTIME, &end_time);
 	if(errno != EOK) {
@@ -50,14 +47,17 @@ double measure_useless_for_one_million() {
 
 	unsigned int difference_in_seconds = end_time.tv_sec - start_time.tv_sec;
 	unsigned long difference_in_ns = end_time.tv_nsec - start_time.tv_nsec;
-
-	return (difference_in_seconds * 1000 * 1000 * 1000 + difference_in_ns) / (1000.0 * 1000.0);
+	unsigned long time = (difference_in_seconds * 1000 * 1000 * 1000 + difference_in_ns) / (1000.0);
+	if(fac == 1.0) {
+		fac = (double)msec / (double)(time / 1000.0);
+		printf("Setting fac to %f\r\n", fac);
+	}
+	printf("Elapsed time %luus\r\n", time);
 }
 
 void* thread_function(void *arg) {
-	const pthread_t self = pthread_self();
 	int i = 0;
-	double spent = 0.0;
+	const pthread_t self = pthread_self();
 	printf("--- THREAD TALKING ---\r\n");
 	/* Measure accuracy of measure_useless_for_one_million */
 	struct sched_param thread_sched;
@@ -68,21 +68,19 @@ void* thread_function(void *arg) {
 	}
 	printf("My priority is %d\r\n", thread_sched.sched_priority);
 
-	for(i = 0; i <= 99; i++) {
-		const double current = measure_useless_for_one_million();
-		printf("CURRENT MEASUREMENT: %fms\r\n", current);
-		spent += current;
+	fac = 1.0;
+	/* Set factor accordingly */
+	measure_useless_for_one_million(100);
+
+	for(i = 0; i < 10; i++) {
+		measure_useless_for_one_million(1);
 	}
 
-	time_in_ms_for_one_million = spent / i;
-	printf("MEAN VALUE: %fms\r\n", time_in_ms_for_one_million);
 	return NULL;
 }
 
 int main(int argc, char *argv[]) {
 	int i = 0;
-	double spent = 0.0;
-
 	/* Get main-thread priority */
 	struct sched_param thread_sched;
 	int ret_sched = pthread_getschedparam(pthread_self(), NULL, &thread_sched);
@@ -92,15 +90,13 @@ int main(int argc, char *argv[]) {
 	}
 	printf("Main thread priority is %d\r\n", thread_sched.sched_priority);
 
-	/* Measure accuracy of measure_useless_for_one_million */
-	for(i = 0; i <= 99; i++) {
-		const double current = measure_useless_for_one_million();
-		printf("CURRENT MEASUREMENT: %fms\r\n", current);
-		spent += current;
-	}
-	time_in_ms_for_one_million = spent / i;
-	printf("MEAN VALUE: %fms\r\n", time_in_ms_for_one_million);
+	fac = 1.0;
+	/* Set factor accordingly */
+	measure_useless_for_one_million(100);
 
+	for(i = 0; i < 10; i++) {
+		measure_useless_for_one_million(1);
+	}
 
 	// Teil b) mit Thread-Prioritaet
 
