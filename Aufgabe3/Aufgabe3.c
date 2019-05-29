@@ -21,15 +21,10 @@ void waste_msecs(unsigned int msecs) {
 }
 
 void measure_useless_for_one_million(unsigned int msec) {
-	/* Calculate time for 1.000.000 runs */
 	struct timespec start_time, end_time;
 	int clk_return = clock_gettime(CLOCK_REALTIME, &start_time);
 	if(errno != EOK) {
 		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-	if(clk_return != 0) {
-		printf("Clock_gettime returned %d\r\n", clk_return);
 		exit(-1);
 	}
 
@@ -38,10 +33,6 @@ void measure_useless_for_one_million(unsigned int msec) {
 	clk_return = clock_gettime(CLOCK_REALTIME, &end_time);
 	if(errno != EOK) {
 		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-	if(clk_return != 0) {
-		printf("Clock_gettime returned %d\r\n", clk_return);
 		exit(-1);
 	}
 
