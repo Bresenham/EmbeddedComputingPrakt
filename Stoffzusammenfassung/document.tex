@@ -1,0 +1,259 @@
+%http://de.wikipedia.org/wiki/Hilfe:TeX#Sonderzeichen_in_TeX
+%http://www.kubieziel.de/computer/latex-tutorial.html
+%http://www.math.uiuc.edu/~hildebr/tex/course/intro2.html
+%http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
+%Immer document.tex oder main.tex nennen!
+%http://latex.mschroeder.net/
+%http://stackoverflow.com/questions/741985/latex-source-code-listing-like-in-professional-book
+%http://amath.colorado.edu/documentation/LaTeX/reference/faq/bibstyles.pdf
+%ftp://tug.ctan.org/pub/tex-archive/info/l2tabu/german/l2tabu.pdf
+%http://amath.colorado.edu/documentation/LaTeX/reference/faq/bibstyles.html#styles
+%http://www.bibtex.org/SpecialSymbols/de/
+%http://amath.colorado.edu/documentation/LaTeX/reference/faq/bibstyles.html#styles
+%http://www.bibtex.org/SpecialSymbols/de/
+%http://en.wikipedia.org/wiki/Help:Displaying_a_formula
+%mit "\input{datei}" wird die Datei "datei.tex" direkt an dieser Stelle eingefügt
+
+\documentclass[
+% *** Papiergröße und Seitenteilung ***
+	openany,
+	german,
+	paper=a4,				%A4
+					%Bindung links, aufgeschlagen von rechts
+	DIV=15,					%Seitenteilung (Anzahl der Teile). Einfach mal damit spielen
+							%8..15
+	BCOR=-1cm,				%Binderand auf der Innenseite für die Buchbindung
+% *** Formatierung/Schriftgröße/Kopf/Fußzeilenoptionen
+	8pt,					%Schriftgröße 12pt
+	parskip,				%kann mit einer Länge versehen werden um die Absatzgröße
+							%einzustellen	
+	headsepline,			%Kopfzeile über jeder Seite anlegen
+	cleardoublepage=empty,	%Füllseiten sind auch wirklich "leer", also auch ohne
+							%Seitennummerierung
+	%,chapterprefix
+% *** Einträge im Inhaltsverzeichnis (TOC) definieren ***
+	bibtotoc,				%Literaturverz/Referenzen
+	]{scrreprt}				%KOMA-Vorlage scrrprt
+
+% *** KOMA-Seitenstil Kopfzeilen/Fußzeilen! ***
+\setkomafont{disposition}{\rmfamily}
+\usepackage{scrpage2} 		%KOMA-Seitenstil
+\pagestyle{scrheadings} 	%Seitenstile von scrpage2 {KOMA} aktivieren
+\automark[section]{chapter}	%Kapitel innen, Unterkapitel rechts
+\clearscrheadings 			%Alle Markierungen auf den Seiten löschen
+\ihead{}					%Seitenkopf innen (Bei D.seite l.Seite: r.o. und bei r.Seite:l.o)
+\chead{}					%Seitenkopf mitte
+\ohead{\headmark}			%Seitenkopf außen 
+\ifoot{}					%Seitenfuß innen
+\cfoot{}					%Seitenfuß mitte
+\ofoot{\pagemark}			%Seitenfuß außen
+\setlength{\headheight}{1.1\baselineskip}	%Höhe des reservierten Platzes am Seitenkopf
+
+	
+%******************************
+%      Sprache und Schrift 
+%******************************	
+%alles für deutsche Eingabe (sonst keine Umlaute im Sourcecode möglich)   
+\usepackage[latin1]{inputenc}
+%\usepackage[utf8]{inputenc}
+\usepackage[english,ngerman]{babel} 
+\usepackage[T1]{fontenc} 	
+\usepackage{lmodern}		%bessere Schrift		
+%  **  Absätze  **
+\parindent 0pt				%Absätze nicht von links einrücken
+%Größe dynamisch anpassen, so dass auf die Seite mehr Text geht
+%oder aufgeweitet wird, so dass eine angefangene Seite besser gefüllt wird
+%\usepackage{setspace}		
+\usepackage[onehalfspacing]{setspace}
+
+%******************************
+% ALTE SPRACHEN
+%******************************
+%\usepackage{ibycus4}	%altgriechisch
+%\usepackage{etex}
+%\usepackage{cjhebrew}		%hebräisch
+%\usepackage[english]{betababel}
+
+%\usepackage{palatino}
+%\usepackage{latexsym}
+%\usepackage{multirow}
+%\usepackage{graphicx}
+
+
+%*********************************
+%	Pakete für Index/Glossar/Mathe/...
+%*********************************
+% ** Mathe/Formeln **
+\usepackage{amsmath} 		%TeX-Mathe ermöglichen
+% ** Inhaltsverzeichnis **
+\usepackage{makeidx}		%wird durch \makeindex eingeleitet und
+							%\printindex ausgeführt
+\makeindex
+% ** Bilder/Grafiken einbinden **
+\usepackage{graphicx}		%Graphiken aller Art einbinden, auch eps
+\usepackage{float} 			%platziert grafiken besser
+% ** Links im PDF werden anklickbar **
+\usepackage{hyperref}
+% ** Glossar für Begriffsdefinitionen wird erstellt **
+\usepackage{nomencl}		%Nomenklatur-Paket für das Glossar verwenden 
+\makenomenclature			%wird durch /makenomenclature eingeleitet und mit
+							%/printnomenclature ausgeführt
+% ** Listings ** ->Sourcecode vorformatiert zitieren -> z Zt auf C++ eingestellt
+\usepackage{listings}		%Code-Listings erlauben
+\usepackage{color}			%ermöglicht Farbvorgaben, z.B. bei den Listings
+\usepackage{courier}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{makecell}
+\usepackage{titlesec}
+\usepackage[default]{gfsneohellenic}
+
+%******************
+%  RESERVIERT
+%******************
+%\usepackage{mparhack}		%evtl. notwendig, wenn Ränder buggy
+%\input{Kapitel/Zusatz}	%andere Textdateien includieren
+
+%********************************************************
+%	Titel usw., auch für das PDF
+%********************************************************
+\title{Vorlage für eine Bachelorarbeit mit LaTeX}
+\author{René Bauer}
+\date{9. Mai 2011}
+% ** Einträge für das erzeugte PDF **
+\hypersetup{
+pdfauthor = {René Bauer},
+pdftitle = {Vorlage für eine Arbeit mit LaTeX}, 
+pdfsubject = {Steuerungsoptimierung},
+pdfkeywords = {TeX, LaTeX, pdflatex, Bachelorarbeit, Bachelorthesis, Diplomarbeit},
+pdfcreator = {LaTeX with hyperref package},
+pdfproducer = {dvips + ps2pdf}	%eigentlich ist es pdflatex
+}
+\lstset{language=C++,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	numbers=none,
+	morecomment=[l][\color{magenta}]{\#}
+}
+
+
+\titleformat{\chapter}[display]
+{\normalfont\huge}{}{10pt}{\Large}
+\titlespacing{\chapter}{0pt}{-125pt}{0pt}
+
+\titleformat{\section}[display]
+{\normalfont\huge}{}{-50pt}{\large}
+
+\titleformat{\subsection}[display]
+{\normalfont\huge}{}{-50pt}{\large}
+
+%*********************************************
+%	Fußnoten durchgehend nummerieren
+%*********************************************
+% - normalerweise wird je Seite oder Kapitel neu gezählt
+\usepackage{chngcntr} 
+\counterwithout{footnote}{chapter}
+
+%*********************************************
+% Überschriften usw neu benennen
+%*********************************************
+% hier ist nicht die Namensgebung und Aufnahme der
+% Begriffsdefinitionen, hierfür bitte unten nachschauen!
+%\renewcommand{\contentsname}{Table of contents}
+%\renewcommand{\listfigurename}{List of figures}
+%\renewcommand{\figurename}{Figure}
+%\renewcommand{\tablename}{Table}
+%\renewcommand{\listtablename}{List of tables}
+
+%************************************************
+%    HIER BEGINNT DAS EIGENTLICHE DOKUMENT
+%************************************************
+\begin{document}
+
+%**************************************************************
+%   unbedingt eine Seite für die spätere Bindung frei lassen!
+%**************************************************************
+%\newpage
+
+%******************************************************
+%                     Titelblatt
+%******************************************************
+
+\chapter{Embedded Systems}
+\section{Einführung}
+\subsection{Eingebettetes System}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.315]{images/eingebettetes_system.png}} & \makecell[l]{
+		$\circ$ integrierte, elektronische Schaltung mit spezifischer Aufgabe,\\
+		\hspace*{1em}mit der ein Benutzer nur indirekt in Verbindung kommt\\
+		$\circ$ Teil eines Gesamtsystems mit stark beschränkten Ressourcen,\\
+		\hspace*{1em}bestehend aus Hard- und Software (teilweise ohne Betriebssystem)\\
+		$\circ$ HW/SW-Codedesign z.B. mit \textit{VHDL},\\
+		\hspace*{1em}allgemein \textit{tool}- bzw. \textit{modellbasierter} Entwurf\\
+		$\circ$ \textit{75 \%} verwenden ein Betriebssystem (Tendenz steigend)\\
+		\hspace*{1em}- \textit{25 \%} mit \textit{Main-Loop}
+	}
+\end{tabular}\\
+
+\begin{tabular}{lc}
+	\makecell[l]{
+		$\circ$ Ist eine Kombination aus Hard- und Softwarekomponenten, die in einen technischen Kontext\\
+		\hspace*{1em}zur \textit{Steuerung}, \textit{Regelung} und \textit{Überwachung} eines Systems eingebunden sind\\
+		$\circ$ Es verrichtet vordefinierte Aufgaben, oftmals mit \textit{Echtzeitberechnungs}-Anforderungen\\
+		$\circ$ \textbf{Speicherprogrammierbare Steuerung} (SPS): Verwendet zur Fabrikautomatisierung, Verkehrsleitung\\
+		$\circ$ \textbf{Standardarchitektur} auf einem PC: Preiswerte Hardware (allerdings oft nicht \textit{industrietauglich})\\
+		\hspace*{1em}preiswerte Software, häufig ohne \textit{Echtzeitfaehigkeit}\\
+		$\circ$ \textbf{Industrie-PC}: Unterstützt Echtzeitbetriebssysteme
+	} & \raisebox{-.5\height}{\includegraphics[scale=0.315]{images/prozessankopplung.png}}
+\end{tabular}
+
+\vspace*{-.5em}
+\subsection{Definition: \textit{Technischer Prozess}}
+\vspace*{-1.7em}
+$\circ$ Prozess, in dem Zustandsgrößen durch \textit{technische} Hilfsmittel festgestellt und beeinflusst werden\\
+\hspace*{1em}- \textit{Prozess} definiert als Gesamtheit von aufeinander einwirkenden Vorgängen in einem System, durch die Information verändert wird\\
+$\circ$ \textit{Sensoren} (z.B. Thermometer, Kamera, Mikrofon) erfassen Zustandsgrößen, \textit{Aktoren} (z.B. Motoren, Relais, Ventile) beeinflussen sie
+
+\vspace*{-.75em}
+\subsection{Klassifikation: \textit{Technischer Prozess}}
+\vspace*{-1.7em}
+$\circ$ \textbf{Fließprozess (Regler):} physikalische Größe mit stückweise kontinuierlichem Wertebereich,\\
+\hspace*{1em}ablaufende Vorgänge sind zeit- und ortsabhängig, z.B. chemische Reaktoren, Energieerzeugung in Kraftwerken\\
+$\circ$ \textbf{Folgeprozess (State Machine):} Binäre, diskrete Informationselemente werden gemeldet oder ausgelöst,\\
+\hspace*{1em}z.B. Ampel- oder Aufzugsteuerung\\
+$\circ$ \textbf{Stückprozess (Datenbank):} Informationselemente werden einzeln identifizierbaren Objekten (Stücken) zugeordnet\\
+\hspace*{1em}z.B. Transport- oder Ladevorgänge, Fertigung
+
+\vspace*{-.75em}
+\subsection{Definition: \textit{Rechenprozess}}
+\vspace*{-1.7em}
+$\circ$ \textit{Task} als Instanz zur dynamischen Abarbeitung eines Programms zur Berechnung von Ausgabewerten aus Eingabewerten über\\
+\hspace*{1em}Umformen, Transportieren oder Speichern von Information
+
+\vspace*{-.75em}
+\subsection{Definition: \textit{Kognitiver Prozess}}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.175]{images/kognitiver_prozess.png}} & \makecell[l]{
+		$\circ$ Umformen, transportieren oder verarbeiten von Information im menschlichen Bediener\\
+		$\circ$ Einflussnahme des Bedieners auf den Rechenprozess über \textit{Man Machine Interface} (MMI)
+	}
+\end{tabular}
+
+\vspace*{-.75em}
+\subsection{Definition: \textit{Steuerungssystem}}
+\vspace*{-1.7em}
+$\circ$ Umfasst zur Steuerung erforderliche Rechenprozesse sowie deren Hard- bzw. Software\\
+$\circ$ Aufgaben:\\
+\hspace*{1em}- Erfassen von Zustandsgrößen\\
+\hspace*{1em}- Koordinaten \& Überwachung der Prozessabläufe
+
+\vspace*{-.75em}
+\subsection{Definition: \textit{Steuerung} und \textit{Regelung}}
+\vspace*{-1.7em}
+$\circ$ \textbf{Steuerung:} Kein geschlossener \textit{Regelkreis}, Rechenprozess reagiert nicht auf sich ändernde Sensorwerte im technischen Prozess\\
+$\circ$ \textbf{Regelung:} Geschlossener \textit{Regelkreis}, Sensor- bzw. Messwerte werden verwendet, um Stellgrößen daraus zu berechnen
+\end{document}

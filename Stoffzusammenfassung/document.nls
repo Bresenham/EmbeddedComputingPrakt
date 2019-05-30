@@ -1,0 +1,8 @@
+\begin{thenomenclature} 
+
+ \nomgroup{A}
+
+  \item [{LaTeX}]\begingroup  LaTeX ist eine TeX-Distribution. Von ihr liegen wiederum Derivate für Windows vor. Hierfür findet beispielsweise MiKTeX anwendung.\nomeqref {0.0}
+		\nompageref{11}
+
+\end{thenomenclature}
