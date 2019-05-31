@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.21)  31 MAY 2019 00:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.21)  31 MAY 2019 10:23
 entering extended mode
 **./document.tex
 (document.tex
@@ -846,7 +846,7 @@ LaTeX Font Info:    Font shape `OT1/neohellenic/m/n' will be
 LaTeX Font Info:    Font shape `OT1/neohellenic/m/n' will be
 (Font)              scaled to size 6.12503pt on input line 188.
 
-<images/eingebettetes_system.png, id=39, 693.34032pt x 354.57469pt>
+<images/eingebettetes_system.png, id=47, 693.34032pt x 354.57469pt>
 File: images/eingebettetes_system.png Graphic file (type png)
 
 <use images/eingebettetes_system.png>
@@ -862,7 +862,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 188--200
 
 LaTeX Font Info:    Font shape `T1/neohellenic/bx/n' will be
 (Font)              scaled to size 9.80005pt on input line 210.
-<images/prozessankopplung.png, id=41, 307.90031pt x 284.56313pt>
+<images/prozessankopplung.png, id=49, 307.90031pt x 284.56313pt>
 File: images/prozessankopplung.png Graphic file (type png)
 
 <use images/prozessankopplung.png>
@@ -887,7 +887,7 @@ Package babel Info: Redefining ngerman shorthand "|
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 237.
 
-<images/kognitiver_prozess.png, id=42, 943.27406pt x 518.6878pt>
+<images/kognitiver_prozess.png, id=50, 943.27406pt x 518.6878pt>
 File: images/kognitiver_prozess.png Graphic file (type png)
 
 <use images/kognitiver_prozess.png>
@@ -906,20 +906,19 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 255.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 255.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 259.
 LaTeX Font Info:    Font shape `T1/neohellenic/m/sl' will be
-(Font)              scaled to size 9.80005pt on input line 259.
+(Font)              scaled to size 9.80005pt on input line 260.
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 259.
+(babel)             in language  on input line 260.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 259.
+(babel)             in language  on input line 260.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 259.
+(babel)             in language  on input line 260.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 259.
+(babel)             in language  on input line 260.
 
 [1
 
@@ -927,19 +926,72 @@ Package babel Info: Redefining ngerman shorthand "~
 {C:/Users/Standardbenutzer/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <
 ./images/eingebettetes_system.png> <./images/prozessankopplung.png> <./images/k
 ognitiver_prozess.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 259.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 263.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 263.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 268.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 268.
+
+<images/host_target_entwicklung.png, id=63, 611.28375pt x 261.97874pt>
+File: images/host_target_entwicklung.png Graphic file (type png)
+
+<use images/host_target_entwicklung.png>
+Package pdftex.def Info: images/host_target_entwicklung.png used on input line 
+272.
+(pdftex.def)             Requested size: 137.54224pt x 58.94667pt.
+
+Overfull \hbox (70.8037pt too wide) in paragraph at lines 270--286
+[] 
+ []
+
+<images/entwicklung_host_target.png, id=64, 563.85657pt x 440.39531pt>
+File: images/entwicklung_host_target.png Graphic file (type png)
+
+<use images/entwicklung_host_target.png>
+Package pdftex.def Info: images/entwicklung_host_target.png used on input line 
+291.
+(pdftex.def)             Requested size: 155.05673pt x 121.10571pt.
+
+Overfull \hbox (16.96422pt too wide) in paragraph at lines 290--301
+[] 
+ []
+
+
+Overfull \hbox (14.50407pt too wide) in paragraph at lines 310--311
+[] 
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 316.
+
+Overfull \vbox (1.79988pt too high) has occurred while \output is active []
+
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 316.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 316.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 316.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 316.
+
+[2 <./images/host_target_entwicklung.png> <./images/entwicklung_host_target.png
+>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 316.
  (document.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 259.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 259.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 316.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 316.
 Package rerunfilecheck Info: File `document.out' has not changed.
-(rerunfilecheck)             Checksum: 86B8A16AC9C395715E2CE37907784E35;693.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 259.
+(rerunfilecheck)             Checksum: E7FF52CDFFF36923B74DD8F7C9A7239C;849.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 316.
  ) 
 Here is how much of TeX's memory you used:
- 12967 strings out of 493333
- 209303 string characters out of 3142635
+ 12987 strings out of 493333
+ 209839 string characters out of 3142635
  414658 words of memory out of 3000000
- 16267 multiletter control sequences out of 15000+200000
+ 16282 multiletter control sequences out of 15000+200000
  24406 words of font info for 45 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,14n,66p,8821b,342s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -952,9 +1004,9 @@ Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/gfsneohellenic/G
 FSNeohellenic-Regular.pfb><C:/Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9
 /fonts/type1/public/gfsneohellenic/GFSNeohellenic-Regular.pfb><D:/Programme/MiK
 TeX/fonts/type1/public/lm/lmsy8.pfb>
-Output written on document.pdf (1 page, 239590 bytes).
+Output written on document.pdf (2 pages, 636459 bytes).
 PDF statistics:
- 78 PDF objects out of 1000 (max. 8388607)
- 11 named destinations out of 1000 (max. 500000)
- 88 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 94 PDF objects out of 1000 (max. 8388607)
+ 14 named destinations out of 1000 (max. 500000)
+ 114 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -256,4 +256,61 @@ $\circ$ Aufgaben:\\
 \vspace*{-1.7em}
 $\circ$ \textbf{Steuerung:} Kein geschlossener \textit{Regelkreis}, Rechenprozess reagiert nicht auf sich ändernde Sensorwerte im technischen Prozess\\
 $\circ$ \textbf{Regelung:} Geschlossener \textit{Regelkreis}, Sensor- bzw. Messwerte werden verwendet, um Stellgrößen daraus zu berechnen
+
+\newpage
+
+\vspace*{-3.0em}
+\subsection{Self-Hosted-Entwicklung}
+\vspace*{-1.7em}
+$\circ$ Entwicklungsumgebung und Zielsystem sind identisch (\textit{so wie wir es alle kennen})
+
+\vspace*{-0.5em}
+\subsection{Host-Target-Entwicklung}
+\vspace*{-1.7em}
+$\circ$ \textit{Self-Hosted-Entwicklung} oft nicht möglich da Hardware proprietär oder zu leistungsschwach für Entwicklungsumgebung\\
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.225]{images/host_target_entwicklung.png}} & \makecell[l]{
+		$\circ$ \textbf{Host:} Entwicklungsrechner, enthält \textit{Cross-Compiler}, \textit{Remote-Debugger}, \textit{Target-}Libraries und -Betriebssystem\\
+		\hspace*{1em}- \textit{Cross-Compiler:} Erzeugt \textit{Image}, dass eigentliche Applikation sowie\\
+		\hspace*{1em}\hspace*{1em}Betriebssystem- und Laufzeitkomponenten + \textit{Startupcode} enthält\\
+		\hspace*{1em}- \textit{Remote-Debugger:} Auf dem Host läuft GUI mit \textit{Debug-Info}, über \textit{JTAG} etc. sieht man\\
+		\hspace*{1em}\hspace*{1em}den Systemzustand des Targets (\textit{Stack}, \textit{Variablen}belegung) an gewählten \textit{Breakpoints}\\
+		\hspace*{1em}- \textit{Ohne} Remote-Debugger: Konsolenausgaben per \textit{printf}, \textit{LED}s blinken lassen\\
+		$\circ$ \textbf{Schnittstelle:} Zum \textit{Downloaden} der Applikation auf das \textit{Target} oder fürs \textit{Debugging},\\
+		\hspace*{1em}verschiedenste Variationen möglich (z.B. \textit{Ethernet}, \textit{USB}, \textit{JTAG}, \textit{Flash}, ...)\\
+		$\circ$ \textbf{Target:} System, für das entwickelt wird\\
+		\hspace*{1em}- \textit{Boot-Monitor:} Programm auf dem Target, über das Software geladen und gestartet werden kann,\\
+		\hspace*{1em}\hspace*{1em}erfolgt über ähnliche Schnittstellen wie die \textit{Host-Target}-Entwicklung an sich
+	}
+\end{tabular}
+
+\vspace*{-1.7em}
+\subsubsection{Softwareentwicklung in einem \textit{Host-Target} System}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.275]{images/entwicklung_host_target.png}} & \makecell[l]{
+		$\circ$ \textbf{Object File:} Symboltabelle\\
+		$\circ$ \textbf{Linker:} Symbol-Auflösung und \textit{Relocation}\\
+		$\circ$ \textbf{Executable File:} Code \& Daten zur Ausführung, Umsetzung auf virtuellen Speicher\\
+		$\circ$ \textbf{Shared object file:} Code und Daten zum (dynamischen) linken mit anderen \textit{object files}\\
+		$\circ$ \textbf{Relocatable file:} Code und Daten zum linken mit anderen \textit{object files} um Executable\\
+		\hspace*{1em}zu erstellen\\
+		$\circ$ \textbf{Dynamic Linker:} Laden von \textit{shared} Libraries
+	}
+\end{tabular}
+
+\vspace*{-1.7em}
+\subsubsection{Tools: \textit{Kernel-Tracer}}
+\vspace*{-1.7em}
+$\circ$ Zeigt \textit{Signale}, \textit{Task-Zustaende}, \textit{Semaphoren}, \textit{Interrupts}
+
+\vspace*{-1.7em}
+\subsubsection{Tools: \textit{Stack-Monitor}}
+\vspace*{-1.7em}
+\text{$\circ$ Zeigt maximal verfügbarer \textit{Stack} pro \textit{Task}, aktuelle Auslastung und maximale je gemessene Auslastung (\textit{Hochwassermarke}) des Stacks}
+
+\vspace*{-1.7em}
+\subsubsection{Weitere Tools}
+\vspace*{-1.7em}
+$\circ$ Anzeige der Speicherbelegung und \textit{Auslastung} der \textit{CPU}, \textit{Memory-Leak-Detection}, \textit{Code-Coverage}
 \end{document}
