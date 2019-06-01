@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.21)  31 MAY 2019 10:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.21)  31 MAY 2019 12:45
 entering extended mode
 **./document.tex
 (document.tex
@@ -964,49 +964,54 @@ Overfull \hbox (14.50407pt too wide) in paragraph at lines 310--311
 [] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 316.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 319.
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 316.
+(babel)             in language  on input line 319.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 316.
+(babel)             in language  on input line 319.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 316.
+(babel)             in language  on input line 319.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 316.
+(babel)             in language  on input line 319.
 
 [2 <./images/host_target_entwicklung.png> <./images/entwicklung_host_target.png
 >]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 316.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 319.
  (document.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 316.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 316.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 319.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 319.
 Package rerunfilecheck Info: File `document.out' has not changed.
 (rerunfilecheck)             Checksum: E7FF52CDFFF36923B74DD8F7C9A7239C;849.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 316.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 319.
  ) 
 Here is how much of TeX's memory you used:
- 12987 strings out of 493333
- 209839 string characters out of 3142635
+ 12996 strings out of 493333
+ 209968 string characters out of 3142635
  414658 words of memory out of 3000000
  16282 multiletter control sequences out of 15000+200000
- 24406 words of font info for 45 fonts, out of 3000000 for 9000
+ 27907 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,14n,66p,8821b,342s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/gfsneoh
-ellenic/neohellenicec.enc}{D:/Programme/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc
-}<C:/Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/gfsne
-ohellenic/GFSNeohellenic-Bold.pfb><C:/Users/Standardbenutzer/AppData/Roaming/Mi
-KTeX/2.9/fonts/type1/public/gfsneohellenic/GFSNeohellenic-Italic.pfb><C:/Users/
-Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/gfsneohellenic/G
-FSNeohellenic-Regular.pfb><C:/Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9
-/fonts/type1/public/gfsneohellenic/GFSNeohellenic-Regular.pfb><D:/Programme/MiK
-TeX/fonts/type1/public/lm/lmsy8.pfb>
-Output written on document.pdf (2 pages, 636459 bytes).
+{D:/Programme/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/Standardbenut
+zer/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/gfsneohellenic/neohellenic.enc}{
+D:/Programme/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Standardbenutzer/App
+Data/Roaming/MiKTeX/2.9/fonts/enc/dvips/gfsneohellenic/neohellenicmath.enc}{C:/
+Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts/enc/dvips/gfsneohelleni
+c/neohellenicec.enc}<C:/Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts
+/type1/public/gfsneohellenic/GFSNeohellenic-Bold.pfb><C:/Users/Standardbenutzer
+/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/gfsneohellenic/GFSNeohellenic-It
+alic.pfb><C:/Users/Standardbenutzer/AppData/Roaming/MiKTeX/2.9/fonts/type1/publ
+ic/gfsneohellenic/GFSNeohellenic-Regular.pfb><C:/Users/Standardbenutzer/AppData
+/Roaming/MiKTeX/2.9/fonts/type1/public/gfsneohellenic/GFSNeohellenic-Regular.pf
+b><D:/Programme/MiKTeX/fonts/type1/public/lm/lmr6.pfb><D:/Programme/MiKTeX/font
+s/type1/public/lm/lmr8.pfb><D:/Programme/MiKTeX/fonts/type1/public/lm/lmsy6.pfb
+><D:/Programme/MiKTeX/fonts/type1/public/lm/lmsy8.pfb>
+Output written on document.pdf (2 pages, 653299 bytes).
 PDF statistics:
- 94 PDF objects out of 1000 (max. 8388607)
+ 113 PDF objects out of 1000 (max. 8388607)
  14 named destinations out of 1000 (max. 500000)
  114 words of extra memory for PDF output out of 10000 (max. 10000000)
 
