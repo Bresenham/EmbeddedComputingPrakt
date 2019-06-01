@@ -107,6 +107,8 @@
 \usepackage{makecell}
 \usepackage{titlesec}
 \usepackage[default]{gfsneohellenic}
+\usepackage{tikz}
+\usepackage{tabularx}
 
 %******************
 %  RESERVIERT
@@ -313,5 +315,169 @@ $\circ$ Zeigt \textit{Signale}, \textit{Task-Zustaende}, \textit{Semaphoren}, \t
 \subsubsection{Weitere Tools}
 \vspace*{-1.7em}
 $\circ$ Anzeige der Speicherbelegung und \textit{Auslastung} der \textit{CPU}, \textit{Memory-Leak-Detection}, \textit{Code-Coverage}
+
+\newpage
+
+\vspace*{-2.9em}
+\section{Echtzeitbetrieb}
+\vspace*{-.5em}
+\subsection{Kriterien für Echtzeitsysteme}
+\vspace*{-1.75em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{
+		\begin{tikzpicture}[scale=0.67]
+			\coordinate (R) at (0,0);
+			\coordinate (B) at (3.5,0.01);
+			\coordinate (C) at (4.1,0.01);
+			
+			\draw[->] (-.5,0) -- (4.2,0) node[right] {$t$};
+			\draw[->] (0,-.5) -- (0,4.2) node[above] {$Auslastung$};
+			\draw[-, line width=0.25mm]  (3,-.5) -- (3,4);
+			\node[] at (4.67, -.5) {Echtzeitschranke};
+			
+			\draw[-] (R) to[out=60,in=130, distance=3cm ] (B);
+			\node[] at (1.75,2.2) {Schneller PC};
+			
+			\draw[-] (R) to[out=40,in=140, distance=3cm ] (C);
+			\node[] at (5.25,0.75) {Langsamer PC};
+		\end{tikzpicture}
+		} & \makecell[l]{
+		$\circ$ Schnelligkeit bzw. Geschwindigkeit ist \textbf{nicht} wichtig im Kontext einer harten Echtzeitschranke\\
+		\hspace*{1em}ein schnellerer PC ist zwar häufiger vor der Schranke fertig, aber eben auch nicht zu 100\%\\
+		$\circ$ Wichtig dagegen sind:\\
+		\hspace*{1em}- Pünktlichkeit (\textit{Ober- und Untergrenze}) bzw. Rechtzeitigkeit (\textit{Nur Obergrenze}) (\textit{timeliness})\\
+		\hspace*{1em}- Verfügbarkeit\\
+		\hspace*{1em}- Determinismus (bei gleicher Eingabe im gleichen Zustand liefert das System immer die\\
+		\hspace*{1em}\hspace*{1em}gleiche Ausgabe)\\
+		$\circ$ Verletzungen von Zeitbedingungen ggf. katastrophal (fristgerechte Bearbeitung von Anforderungen\\
+		\hspace*{1em}aus einem technischen Prozess)
+	}
+\end{tabular}
+
+\vspace*{-.5em}
+\subsection{Vorbedingungen für Echtzeitbetrieb}
+\vspace*{-1.7em}
+$\circ$ Verarbeitungszeit von Aufgaben berücksichtigen, bei mehreren Aufgaben Reihenfolge der Abarbeitung planen\\
+$\circ$ Reihenfolge entscheidend für fristgerechte Ergebnisse\\
+$\circ$ Priorität von Aufgaben gemäß ihrer Wichtigkeit als Planungsgrundlage\\
+$\circ$ Unterbrechung einer Aufgabe muss durch einen Prozess zur Bearbeitung höher-priorer Aufgaben möglich sein\\
+\hspace*{1em}$\Rightarrow$ Formaler Rahmen zum Nachweis schritthaltender Verarbeitung
+
+\vspace*{-1em}
+\subsection{Echtzeitbedingung: Auslastung}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.325]{images/auslastung.png}} & \makecell[l]{
+		$\circ$ $t_V$ := Verarbeitungszeit\\
+		$\circ$ $t_P$ := Prozesszeit, Abstand zwischen zwei Anforderungen (\textit{Jobs})\\
+		\hspace*{1em}desselben Typs, wenn $t_P$ konstant handelt es sich um einen\\
+		\hspace*{1em}\textit{zyklischen} bzw. \textit{periodischen} Prozess\\
+		$\circ$ $\rho = \frac{t_V}{t_P}$ := Auslastung\\
+		\hspace*{1em}- $\rho_A = \frac{t_{VA}}{t_{PA}}$\\
+		\hspace*{1em}- $\rho_B = \frac{t_{VB}}{t_{PB}}$\\
+		\hspace*{1em}- $\rho_{A+B} = \frac{t_{VA}}{t_{PA}} + \frac{t_{VB}}{t_{PB}}$\\
+		$\circ$ $\rho = \sum_{i = 0}^{n}\frac{t_Vi}{t_Pi}$ := Gesamtauslastung bei $n$ Prozessen
+	}
+\end{tabular}
+$\circ$ \textbf{1. \textit{Echtzeitbedingung:}} Gesamtauslastung aller Prozesse $\leq$ 1 $\Leftrightarrow$ $\rho = \sum_{i = 0}^{n}\frac{t_Vi}{t_Pi} \leq 1$
+
+\vspace*{-1.7em}
+\subsubsection{Art von Rechenprozessen}
+\vspace*{-1.7em}
+$\circ$ \textit{zyklisch:} konstanter Abstand zwischen zwei Anforderungen\\
+$\circ$ \textit{azyklisch:} Keine Untergrenze zwischen zwei Nachrichten, kommen beliebig (\textit{gefaehrlich})\\
+$\circ$ \textit{sporadisch:} ähnlich wie \textit{azyklisch} aber mit Untergrenze zwischen zwei Nachrichten (z.B. \textit{Netzwerktreiber})
+
+\vspace*{-1em}
+\subsection{Echtzeitbedingung: Pünktlichkeit}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.325]{images/puenktlich.png}} & \makecell[l]{
+		$\circ$ Aufgabe darf nicht vor spezifizierten Zeitpunkt $t_{Zmin}$ erledigt sein(meist unwichtig oder \textit{trivial})\\
+		$\circ$ Aufgabe muss spätestens bis Zeitpunkt $t_{Zmax}$ erledigt sein (Rechtzeitigkeit)\\
+		$\circ$ Verbleibende Reaktionszeit: $t_R = t_V + t_W$ (Verarbeitungszeit + Wartezeit)\\
+		\hspace*{1em}\textit{Wartezeit} := Zeit, bis Rechenkern frei ist
+	}
+\end{tabular}
+$\circ$ \textbf{2. \textit{Echtzeitbedingung:}} Um Aufgaben rechtzeitig zu erledigen, muss die Reaktionszeit zwischen der minimal\\
+\hspace*{1em}und maximal zulässigen Reaktionszeit liegen: $t_{Zmin} \leq t_{Rmin} \leq t_R \leq t_{Rmax} \leq t_{Zmax}$
+
+\newpage
+
+\vspace*{-2.5em}
+\subsection{Harte und weiche Echtzeit}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{
+		\begin{tikzpicture}[scale=0.75]
+			\coordinate (A) at (1,0);
+			\coordinate (B) at (0,1);
+			\coordinate (C) at (3,0);
+			\coordinate (D) at (4,1);
+			\coordinate (E) at (1,3);
+			\coordinate (F) at (3,3);
+			\coordinate (G) at (.25,3);
+			\coordinate (H) at (3.75,3);
+			
+			\draw[->] (-.5,0) -- (4.2,0) node[right] {$t$};
+			\draw[->] (0,-.5) -- (0,4.2) node[above] {$Kosten$};
+			
+			\draw[-] (A) node[below] {$t_{Zmin}$} -- (B);
+			\draw[-] (C) -- (D)node[right] {Weiche Echtzeit};
+			
+			\draw[-, dotted] (A) -- (E);
+			\draw[-, dotted] (C) node[below] {$t_{Zmax}$} -- (F) node[left] {$Deadline$};
+			
+			\draw[-] (A) to[out=95, in=-60] (G);
+			\draw[-] (C) to[out=85, in=-120] (H) node[right] {Harte Echtzeit};
+		\end{tikzpicture}
+	} & \makecell[l]{
+		$\circ$ \textit{Harte} Echtzeit: Verletzung der Rechtzeitigkeit hat \textit{katastrophale} Folgen\\
+		\hspace*{1em}(z.B. Airbag, Herzschrittmacher)\\
+		$\circ$ \textit{Weiche} Echtzeit: Schlechteres Ergebnis (z.B. \textit{ruckelnde} Videowiedergabe, GPS-Latenz)\\
+		\hspace*{1em}$\Rightarrow$ Häufig \textit{Graubereich}\\
+		$\circ$ \textit{Kostenfunktion:} Kosten \textit{explodieren} bei Überschreitung der Echtzeitschranke (\textit{Deadline})\\
+		\hspace*{1em}im Falle von Harter Echtzeit, bei Weicher Echtzeit steigen Kosten nur \textit{linear} an
+	}
+\end{tabular}
+
+\vspace*{-1em}
+\begin{tabular}{lc}
+	\makecell[l]{
+		$\circ$ \textit{Nutzenfunktion:} Ergebnisse außerhalb des Intervalls $[t_{Zmin}, t_{Zmax}]$ haben bei Harter Echtzeit\\
+		\hspace*{1em}nahezu \textit{keinen} Nutzen mehr, bei Weicher Echtzeit ungefähr \textit{lineare} Ab- bzw. Zunahme
+	} &
+	\raisebox{-.5\height}{
+		\begin{tikzpicture}[scale=0.75]
+			\coordinate (A) at (0,0.1);
+			\coordinate (B) at (1,0.1);
+			\coordinate (C) at (1,3);
+			\coordinate (D) at (3,0.1);
+			\coordinate (E) at (3,3);
+			\coordinate (F) at (4,0.1);
+			
+			\draw[->] (-.5,0) -- (4.2,0) node[right] {$t$};
+			\draw[->] (0,-.5) -- (0,4.2) node[above] {$Nutzen$};
+			
+			\draw[-, line width=0.275mm] (A) -- (B) node[below] {$t_{Zmin}$};
+			
+			\draw[-, line width=0.275mm] (B) -- (C);
+			\draw[-, line width=0.275mm] (D) node[below] {$t_{Zmax}$} -- (E) node[left] {$Deadline$};
+		
+			\draw[-, line width=0.275mm] (D) -- (F);
+			
+			\draw[-] (A) to[out=53, in=-95] (C);
+			\draw[-] (E) to[out=275, in=127] (F);
+
+			
+			\node[rotate=90] at (.3, 2.125) {Weiche Echtzeit};
+			\node[rotate=90] at (3.75, 2.125) {Weiche Echtzeit};
+			\node[rotate=45] at (2, 1.25) {Harte Echtzeit};
+			
+		\end{tikzpicture}
+	}
+
+\end{tabular}
+
 
 \end{document}
