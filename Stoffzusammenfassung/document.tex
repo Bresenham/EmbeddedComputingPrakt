@@ -480,4 +480,182 @@ $\circ$ \textbf{2. \textit{Echtzeitbedingung:}} Um Aufgaben rechtzeitig zu erled
 \end{tabular}
 
 
+\newpage
+
+
+\vspace*{-2.5em}
+\section{Echtzeitbetriebssysteme}
+\vspace*{-.5em}
+\subsection{Aufgaben und Anforderungen}
+\vspace*{-1.7em}
+$\circ$ Steuern und Überwachen: Ausführung der Benutzerprogramme \& Verteilung der Betriebsmittel (Speicher, Prozessor, Dateien)\\
+$\circ$ Stellt dem Benutzer die Sicht einer einfacher als die Hardware zu bedienenden \textit{virtuellen Maschine} zur Verfügung\\
+\hspace*{1em}- Aus Sicht des Benutzers steht der Rechner ihm allein zur Verfügung\\
+\hspace*{1em}- Einfacher, standardisierter Zugriff auf \textit{Ressourcen} (Speicher, Geräte, Dateien per Gerätetreiber, Dateisystem, Speichermanagement)\\
+$\circ$ \textbf{Zeitverhalten}\\
+\hspace*{1em}- Schnelligkeit (bei einem \textit{RTOS} insbesondere Realisierung kurzer Antwortzeiten)\\
+\hspace*{1em}- Zeitlicher Determinismus (Speicherverwaltung und Garbage Collection sind problematisch)\\
+\hspace*{1em}\hspace*{1em}$\star$ Scheduling, IPC und Synchronisation\\
+\hspace*{1em}\hspace*{1em}$\star$ Angabe und Einhalten von Zeitbedingungen, Bereitstellen von \textit{Zeitdiensten}\\
+$\circ$ \textbf{Geringer Ressourcenverbrauch}\\
+\hspace*{1em}- Hauptspeicher \& Prozessorzeit\\
+$\circ$ \textbf{Zuverlässigkeit \& Stabilität}\\
+\hspace*{1em}- Programmfehler dürfen Betriebssystem und andere Programme \textit{nicht} beeinflussen\\
+\hspace*{1em}- Linux: Treiber \& Kernelmodule laufen im \textit{Kernel}-Adressraum\\
+\hspace*{1em}- QNX: Mikrokernel-Architektur: sogar Treiber haben \textit{eigenen} Adressraum\\
+$\circ$ \textbf{Sicherheit}\\
+\hspace*{1em}- Datei- und Zugangsschutz\\
+$\circ$ \textbf{Portabilität, Flexibilität und Kompatibilität von Systemkomponenten}\\
+\hspace*{1em}- Erweiterbarkeit, Einhalten von Standard (z.B. \textit{POSIX})\\
+\hspace*{1em}- Möglichkeit für andere Betriebssysteme, geschriebene Programme zu portieren (anpassen, übersetzen, ausführen)\\
+$\circ$ \textbf{Skalierbarkeit}\\
+\hspace*{1em}- Hinzunehmen oder Weglassen von Betriebssystem-Komponenten möglich machen\\
+\hspace*{1em}- Geringer Programm- und Datenspeicherbedarf bei kleinen Anwendungen (\textit{Footprint})\\
+\hspace*{1em}- Komfort und umfassende Funktionalität bei großen Anwendungen
+
+\vspace*{-.5em}
+\subsection{Aufbau und Struktur}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.4]{images/betriebssystemkern.png}} & \makecell[l]{
+		$\circ$ Ein \textit{Betriebssystem} besteht aus aufbauenden \textit{Systemkomponenten}\\
+		\hspace*{1em}(Dienstprogramme, Werkzeuge) und einem \textit{Betriebssystemkern}\\
+		$\circ$ $(1)$: Hardware-\textit{Interrupt}\\
+		$\circ$ $(2)$: Software-Interrupt (\textit{Systemcall})\\
+		$\circ$ $(3)$: Hardware-Interrupt (während eines Systemcalls)\\
+		$\circ$ $(4)$: Hardware-Interrupt (\textit{Scheduler} wird aufgerufen)\\
+		$\circ$ $(5)$: Scheduler übergibt CPU einem Task auf \textit{User}-Ebene\\
+		$\circ$ Betriebssystem-Dienste werden fast bei jedem Betriebssystem über\\
+		\hspace*{1em}Software-Interrupts (\textit{Supervisor Call} / Systemcall) angefordert
+	}
+\end{tabular}
+
+
+\newpage
+
+
+\vspace*{-2.5em}
+\subsection{Prozessmanagement}
+\vspace*{-1.7em}
+\textbf{Unterbrechung \textit{ohne} Betriebssystem}\\
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.4]{images/unterbrechung_ohne_bs.png}} & \makecell[l]{
+		$\circ$ $(1)$: CPU arbeitet Programm ab\\
+		$\circ$ $(2)$: Interrupt während der Programmabarbeitung:\\
+		\hspace*{1em}- Abarbeitung des aktuellen Befehls beenden\\
+		\hspace*{1em}- Befehlszähler und Registerinhalte auf den Stack legen\\
+		\hspace*{1em}- Befehlszähler auf \textit{Interrupt Service Routine} (ISR) legen\\
+		$\circ$ $(3)$: \textit{ISR} rettet von ihr benötigte CPU-Register\\
+		$\circ$ $(4)$: Eigentliche Interrupt-Behandlung\\
+		$\circ$ $(5)$: Gerettete CPU-Register wiederherstellen\\
+		$\circ$ $(6)$: Befehl \textit{Return from Interrupt:}\\
+		\hspace*{1em}- Auf Stack abgelegte Register (\textit{Flags}, \textit{Befehlszaehler})\\
+		\hspace*{1em}\hspace*{1em}wiederherstellen\\
+		$\circ$ $(7)$: Normalen Programmablauf fortsetzen\\
+		$\circ$ \textit{Softwareinterrupts (Systemcalls):}\\
+		\hspace*{1em}- Benutzerprogramme fordern Dienste des Betriebssystems an\\
+		$\circ$ \textit{Hardwareinterrupts:}\\
+		\hspace*{1em}- Hardwarekomponenten (Systemuhr, HDD) fordern Dienste\\
+		\hspace*{1em}\hspace*{1em}des Betriebssystems an
+	}
+\end{tabular}\\
+
+\textbf{Unterbrechung \textit{mit} präemptivem Scheduling (Multitasking Betriebssystem)}\\
+\vspace*{-1em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.4]{images/unterbrechung_mit_bs.png}} & \makecell[l]{
+		$\circ$ \textbf{Präemptiv} (bei RTOS): Rechnerkern wird bei\\
+		\hspace*{1em}Interrupt der aktuell rechnende Task entzogen\\
+		\hspace*{1em}\textit{wenn} höherpriore Task auf Interrupt reagieren muss\\
+		\hspace*{1em}\hspace*{1em}- Interrupt zum Kontextwechsel\\
+		\hspace*{1em}\hspace*{1em}- Retten des Kontextes des unterbrochenen\\
+		\hspace*{1em}\hspace*{1em}\hspace*{1em}Prozesses $j$\\
+		\hspace*{1em}\hspace*{1em}- eventuelle Auftragsbearbeitung\\
+		\hspace*{1em}\hspace*{1em}- \textit{Scheduler:} Auswahl nächster Rechenprozess $i$\\
+		\hspace*{1em}\hspace*{1em}- Kontext von Rechenprozess $i$ laden\\
+		\hspace*{1em}\hspace*{1em}- Return zu $PC_i$\\
+		\hspace*{1em}Bei Interrupt (z.B. \textit{Timer} oder \textit{I/O}) wird Scheduler\\
+		\hspace*{1em}gestartet und zu höher priorem Prozess gewechselt\\
+		\hspace*{1em}um obere Reaktionsschranke eines \textit{RTOS} einhalten\\
+		\hspace*{1em}zu können (Interrupt-Sperre im \textit{Kernel} so kurz\\
+		\hspace*{1em}wie möglich, obere Schranke einhalten \textit{wichtig})\\
+		$\circ$ \textbf{Nicht-präemptiv} (normales Betriebssystem):\\
+		\hspace*{1em}Scheduling nur bei Systemcall oder zeitgesteuert,\\
+		\hspace*{1em}\textit{nicht} bei Interrupt
+	}
+\end{tabular}\\
+\textbf{Task Control Block}\\
+$\circ$ Beinhaltet: Priorität, Maschinenzustand (Register, Stack), Task-Zustand, Zeit-Quantum, Verwaltungsdaten für Betriebsmittel\\ \hspace*{1em}(\textit{Filedeskriptor}), Speicherabbildungstabellen für virtuellen Speicher (\textit{Prozessadressraum} $\rightarrow$ \textit{realer} Speicher (Code, Data, Stack))
+\hspace*{1em}\hspace*{1em}\begin{lstlisting}[basicstyle=\small]
+	char*			name;			/* task name */
+	uint			status;			/* status of task */
+	uint			priority;		/* task's current priority */
+	uint			prioNormal;		/* task's normal priority */
+	FUNCPTR			entry;			/* entry point of task */
+	struct sigtcb	*pSignalInfo;	/* ptr to signal info for task */
+	uint 			taskTicks;		/* total number of ticks */
+	uint			taskIncTicks;	/* number of ticks in slice */
+	struct __sFile	*taskStdFp[3]; int taskStd[3];	/* stdin, stdout, stderr fps / fds */
+	char			**ppEnviron;	/* environment var table */
+	int				envTblSize;		/* number of slots in table */
+	int				nEnvVarEntries;	/* num env vars used */
+	EXC_INFO excInfo; REG_SET regs;		/* exception info & register set */
+\end{lstlisting}
+
+\newpage
+
+\textbf{Task-Zustände}\\
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.375]{images/taskzustaende.png}} & \makecell[l]{
+		$\circ$ \textbf{Tasks und Threads:}\\
+		\hspace*{1em}- \textit{Leichtgewichtige Prozesse} um Aufwand für \textit{Kontextwechsel} zu minimieren\\
+		\hspace*{1em}- Mehrere \textit{Threads} teilen sich fast \textit{kompletten} Task-Kontext\\
+		\hspace*{1em}- Lediglich \textit{Stack} (mit Program Counter) und Thread-Status unterschiedlich\\
+		\hspace*{1em}- sind effizient zu erzeugen und zu schedulen\\
+		\hspace*{1em}- gemeinsamer (\textit{kein} getrennter) Prozessadressraum\\
+		\hspace*{1em}- gemeinsame Betriebsmittel wie Files / Devices\\
+		\hspace*{1em}- gemeinsamer \textit{globaler Speicher}, oft aus Effizienzgründen verwendet\\
+		\includegraphics[scale=0.425]{images/threads.png}\\
+	}
+\end{tabular}
+
+$\circ$ Thread erzeugen:
+\begin{lstlisting}[basicstyle=\small]
+#include <stdio.h>
+void parent() {
+	printf("The parent process has ID %d\n", getpid());
+}
+void child() {
+	printf("The child process has ID %d\n", getpid());
+	return;
+}
+int main(int argc, char **argv) {
+	if( fork() != 0) {
+		parent();
+		wait();
+	} else {
+		child();
+	}
+	printf("Exit process %d \n", getpid());
+	exit( 0 );
+}
+\end{lstlisting}
+
+\vspace*{-2em}
+$\circ$ $int$ $pthread\_create(pthread\_t *thread, pthread\_attr\_t *attr, void *(*start\_routine)(void*), void *arg)$:\\
+\hspace*{1em}- Erzeugt neuen Thread (Einstiegsfunktion $start\_routine$ mit Argument $arg$)\\
+\hspace*{1em}- Thread wird nebenläufig mit aufrufenden Thread abgearbeitet\\
+\hspace*{1em}\hspace*{1em}- Beenden mit $pthread\_exit$ oder beenden von $start\_routine$\\
+\hspace*{1em}- Attribute: \textit{Scheduling} (Art, Parmeter), \textit{Stack} (Größe, Adresse), \textit{JOINABLE} / \textit{DETACHED}\\
+\hspace*{1em}\hspace*{1em}- \textit{JOINABLE:} \textit{Thread Control Block} wird solange aufgehoben, bis \textit{JOIN} auf diesen Thread aufgerufen wird\\
+\hspace*{1em}\hspace*{1em}- \textit{DETACHED:} \textit{TCB} wird direkt nach Beendigung des Threads weggeworfen\\
+$\circ$ $void$ $pthread\_exit(void *retval)$:\\
+\hspace*{1em}- Beendigung des Threads mit $retval$\\
+\hspace*{1em}- Alternative zu Beenden der $start\_routine$\\
+\hspace*{1em}- Cleanup-Handler aufrufen (Ressourcen freigeben (Speicher, Filedeskriptor))\\
+$\circ$ $int$ $pthread\_join(pthread\_t thread, void **thread\_return)$:\\
+\hspace*{1em}- Aufruf blockiert, bis Thread sich beendet (Ergebnis steht dann in $thread\_return$)\\
+$\circ$ $int$ $pthread\_detach(pthread\_t th)$:\\
+\hspace*{1em}- Wenn keiner auf Thread wartet, räumt er sich bei Beendigung komplett auf (Thread Deskriptor, Stack)
 \end{document}
