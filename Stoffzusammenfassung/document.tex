@@ -703,7 +703,6 @@ $\circ$ Einheitlicher, \textit{virtueller} Adressraum für Programme:
 	\item Abbildung durch \textit{Paging} (=Auslagern selten genutzter Speicherseiten (4kByte-\textit{Pages}) auf HDD)
 	\item Swappen und Paging führen zu \textbf{Nichtdeterminismus}, für \textit{Echtzeitbetriebssysteme} also ungeeignet\\
 	\text{$\rightarrow$ Es ist nicht deterministisch, wann \& wie lange eine Page geswapped wird, auch nicht, wie lange das Laden aus HDD in RAM dauert}
-	
 \end{itemize}
 
 \textbf{Adressabbildung}\\
@@ -716,4 +715,45 @@ $\circ$ Virtuelle Adresse (z.b. \textit{32}-Bit lang) besteht aus zwei Teilen: \
 \hspace*{1em}\hspace*{1em}- \textbf{Codezugriff:} $1 :=$ Prozessor darf \textit{Pageinhalt} als Befehl ausführen, $0 :=$ Versuch, Inhalt als Code auszuführen führt zu \textit{Bus-Error}\\
 \text{\hspace*{1em}\hspace*{1em}- \textbf{Validflag:} $1 :=$ Seite ist im Hauptspeicher, $0 :=$ Seite ausgelagert $\rightarrow$ \textit{Seite-Fehlt-Hardware-Interrupt} $\rightarrow$ \textit{Kernel} lädt Seite von HDD}
 
+\newpage
+
+\vspace*{-2.7em}
+\subsection{I/O}
+\vspace*{-1.7em}
+$\circ$ Aufgaben:
+\vspace*{-1.25em}
+\begin{itemize}
+	\setlength\itemsep{-1.25em}
+	\item Aus \textbf{Applikationssicht:} Schnittstelle für einheitlichen Zugriff auf unterschiedlichste Hardware-Ressourcen
+	\item Aus \textbf{Hardwaresicht:} Umgebung, um Hardware einfach \& systemkonform in Kernel zu integrieren
+	\item \textbf{Zusätzlich:} Realisiert Organisationsstrukturen auf Hintergrundspeicher (\textit{Filesystem})
+\end{itemize}
+
+\vspace*{-1.25em}
+$\circ$ Schnittstellenfunktion:
+\vspace*{-1.25em}
+\begin{itemize}
+	\setlength\itemsep{-1.25em}
+	\item \textit{Peripherie}-Zugriffe abgebildet durch:\\
+	- Lesen und Schreiben (\textit{read} und \textit{write})\\
+	\hspace*{1em}$write(fd, \&value, sizeof(value));$\\
+	- Konfigurieren (\textit{ioctl})\\
+	- Öffnen und Schließen (\textit{open} und \textit{close})\\
+	\hspace*{1em}- \textit{Open}-Funktion des Gerätetreibers wird aufgrund der \textit{System}-Call Parameter ausgewählt (z.B. \textit{serielle},  \textit{parallele},\\
+	\hspace*{1em}\hspace*{1em}oder \textit{analoge} Schnittstelle)\\
+	\hspace*{1em}$fd = open('Tuer', O\_RDWR);$\\
+	\hspace*{1em}$...$\\
+	\hspace*{1em}$close(fd);$
+	\item Anforderung einer \textit{Ressource} beim Betriebssystem ggf. Ablehnen aufgrund:\\
+	- fehlender Zugriffsrechte\\
+	- Ressource bereits belegt
+\end{itemize}
+
+\vspace*{-1.25em}
+\textbf{Realisierung von \textit{Treibern}}:\\
+$\circ$ \textit{Device} wird mit Namen sowie primären- und sekundären \textit{Identifier} angelegt: $mknod /dev/carrera$ $240$ $0$\\
+\hspace*{1em}- Führt dazu, dass primären Identifier eine Funktion $init\_module()\{...\}$ zum Initialisieren einer $struct$ $carrera\_table$ zugeordnet wird.\\
+\hspace*{1em}\hspace*{1em}Diese Struktur enthält \textit{Funktionspointer} zu \textit{Treiberfunktionen} wie $carrera\_open()\{...\}$, $carrera\_close\{...\}$, $carrera\_write()\{...\}$\\
+$\circ$ Codezeile $open('/dev/carrera', O\_RDWR);$ führt dazu, dass die bei $/dev/carrera$ bzw. in $carrera\_table$ hinterlegte Funktion\\
+\hspace*{1em}aufgerufen wird: $carrera\_open()\{...\}$
 \end{document}
