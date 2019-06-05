@@ -31,18 +31,15 @@ int main (void) {
 			uint8_t led3 = (led0 | led1);
 			const char toWrite = (led3 << 3) | (led2 << 2) | (led1 << 1) | led0;
 
-			int fd;
-			int size_written;
-
 			//open sets Erno
-			fd = open("/dev/leds", O_RDWR);
+			const int fd = open("/dev/leds", O_RDWR);
 			if(errno != EOK) {
 				printf("Error @ open: %s\r\n", strerror(errno));
 				exit(-1);
 			}
 
 			//write sets erno
-			size_written = write(fd, &toWrite, sizeof(toWrite));
+			const int size_written = write(fd, &toWrite, sizeof(toWrite));
 			if (size_written != sizeof(toWrite) ) {
 				printf("Error writting to /dev/leds: %s\r\n", strerror(errno));
 				return -1;

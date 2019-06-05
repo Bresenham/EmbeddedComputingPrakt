@@ -1,31 +1,20 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/neutrino.h>
+#include <errno.h>
+#include <sched.h>
+#include <stdbool.h>
+#include <semaphore.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+
+sem_t *semaphore;
 
 double fac = 1.0;
-
-void sleep_ms(int msec) {
-	struct timespec time_to_wait;
-	clock_gettime(CLOCK_REALTIME, &time_to_wait);
-	if(errno != EOK) {
-		printf("Error: %s\r\n", strerror(errno));
-		exit(-1);
-	}
-
-	while(msec > 0) {
-		time_to_wait.tv_nsec += 1000 * 1000;
-		if(time_to_wait.tv_nsec >= 1000 * 1000 * 1000) {
-			time_to_wait.tv_sec += 1;
-			time_to_wait.tv_nsec -= 1000 * 1000 * 1000;
-		}
-		const int clk_nanosleep_return = clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &time_to_wait, NULL);
-		if(clk_nanosleep_return != 0) {
-			printf("clock_nanosleep returned %d\r\n", clk_nanosleep_return);
-			exit(-1);
-		}
-
-    msec--;
-	}
-}
 
 void waste_msecs(unsigned int msecs) {
 	unsigned long runs = (unsigned long)(1000000 * fac * msecs);
@@ -39,7 +28,7 @@ void waste_msecs(unsigned int msecs) {
 
 void measure_useless_for_one_million(unsigned int msec) {
 	struct timespec start_time, end_time;
-	int clk_return = clock_gettime(CLOCK_REALTIME, &start_time);
+	clock_gettime(CLOCK_REALTIME, &start_time);
 	if(errno != EOK) {
 		printf("Error: %s\r\n", strerror(errno));
 		exit(-1);
@@ -47,7 +36,7 @@ void measure_useless_for_one_million(unsigned int msec) {
 
 	waste_msecs(msec);
 
-	clk_return = clock_gettime(CLOCK_REALTIME, &end_time);
+	clock_gettime(CLOCK_REALTIME, &end_time);
 	if(errno != EOK) {
 		printf("Error: %s\r\n", strerror(errno));
 		exit(-1);
@@ -67,32 +56,64 @@ void measure_useless_for_one_million(unsigned int msec) {
   Thread 1: Zykluszeit 4ms, Verarbeitungszeit 2ms
 */
 void* thread_1(void *arg) {
-  unsigned long counter = 0;
+printf("Thread_1 started...\r\n");
+  unsigned long counter = 1;
   while(true) {
-    // Schlafe 2ms
-    sleep_ms(2);
+	struct timespec time_to_wait;
+	clock_gettime(CLOCK_REALTIME, &time_to_wait);
+	if(errno != EOK) {
+		printf("Error: %s\r\n", strerror(errno));
+		exit(-1);
+	}
+
+
+	time_to_wait.tv_nsec += 4000 * 1000;
+	if(time_to_wait.tv_nsec >= 1000 * 1000 * 1000) {
+		time_to_wait.tv_sec += 1;
+		time_to_wait.tv_nsec -= 1000 * 1000 * 1000;
+	}
+
+	// Verarbeit 2ms
+	waste_msecs(2);
+
+	const int clk_nanosleep_return = clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &time_to_wait, NULL);
+	if(clk_nanosleep_return != 0) {
+		printf("clock_nanosleep returned %d\r\n", clk_nanosleep_return);
+		exit(-1);
+	}
 
     // Alle 3 Takte wird von Task 1 eine Semaphore gesetzt
     if(counter % 3 == 0) {
-      // Setze Semaphore
+    	// Setze Semaphore
+    	const int ret = sem_post(semaphore);
+    	if (ret != 0) {
+    		printf("Error @ sem_post: %s\r\n", strerror(errno));
+    	}
     }
 
-    // Verarbeit 2ms
-    waste_msecs(2);
     counter++;
   }
+
+  return NULL;
 }
 
 /*
   Thread 2: wartet auf Semaphore von Task 1
 */
 void* thread_2(void *arg) {
-  while(true) {
+	printf("Thread_2 started...\r\n");
+	while(true) {
+		const int ret = sem_wait(semaphore);
+		if (ret != 0) {
+			printf("Error @ sem_wait: %s\r\n", strerror(errno));
+		}
+		waste_msecs(3);
+	}
 
-  }
+	return NULL;
 }
 
-void create_thread(void* (thread_func)(void*)) {
+void create_thread(void* (thread_func)(void*), pthread_t *thrd) {
 	pthread_attr_t thread_attr;
 	const int attr_init_result = pthread_attr_init(&thread_attr);
 	if (attr_init_result != 0) {
@@ -106,28 +127,38 @@ void create_thread(void* (thread_func)(void*)) {
 		exit(-1);
 	}
 
-	pthread_t thread;
-	const int create_thread_result = pthread_create(&thread, &thread_attr, &thread_func, NULL);
+	const int create_thread_result = pthread_create(thrd, &thread_attr, thread_func, NULL);
 	if (create_thread_result != 0) {
 		printf("create_thread_result: %s\n", strerror(create_thread_result));
-		exit(-1);
-	}
-
-	const int pthread_join_result = pthread_join(thread, NULL);
-	if (pthread_join_result != 0) {
-		printf("pthread_join_result: %s\n", strerror(pthread_join_result));
 		exit(-1);
 	}
 }
 
 int main(int argc, char *argv[]) {
-	int i = 0;
+	semaphore = sem_open("semaphore", O_CREAT, S_IRWXO, 1);
+
 	fac = 1.0;
 	/* Set factor accordingly */
 	measure_useless_for_one_million(100);
 
-  create_thread(&thread_1);
-  create_thread(&thread_2);
+	pthread_t thr1, thr2;
+
+	create_thread(&thread_1, &thr1);
+	create_thread(&thread_2, &thr2);
+
+	int pthread_join_result = pthread_join(thr1, NULL);
+	if (pthread_join_result != 0) {
+		printf("pthread_join_result: %s\n", strerror(pthread_join_result));
+		exit(-1);
+	}
+
+
+	pthread_join_result = pthread_join(thr2, NULL);
+	if (pthread_join_result != 0) {
+		printf("pthread_join_result: %s\n", strerror(pthread_join_result));
+		exit(-1);
+	}
+
 
 	return EXIT_SUCCESS;
 }
