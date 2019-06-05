@@ -658,4 +658,62 @@ $\circ$ $int$ $pthread\_join(pthread\_t thread, void **thread\_return)$:\\
 \hspace*{1em}- Aufruf blockiert, bis Thread sich beendet (Ergebnis steht dann in $thread\_return$)\\
 $\circ$ $int$ $pthread\_detach(pthread\_t th)$:\\
 \hspace*{1em}- Wenn keiner auf Thread wartet, räumt er sich bei Beendigung komplett auf (Thread Deskriptor, Stack)
+
+\newpage
+
+\vspace*{-2.7em}
+\subsection{Speichermanagement}
+\vspace*{-1.7em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.375]{images/mmu.png}} & \makecell[l]{
+		$\circ$ Aufgaben einer \textit{Memory-Management-Unit} (MMU): Speicherschutz \& Adressumsetzung\\
+		$\circ$ \textit{MMU} ist in Hardware implementiert und wird durch das Betriebssystem\\
+		\hspace*{1em}mittels \textit{Speicherabbildungstabellen} konfiguriert\\
+		$\circ$ \textbf{Speicherschutz:}\\
+		\hspace*{1em}- Jeder Prozess (\textbf{nicht} Thread) hat eigenen Prozessadressraum\\
+		\hspace*{1em}- Zugriff nur auf eigene \textit{Daten}-, \textit{Stack}- und \textit{Code}segmente\\
+		\hspace*{1em}- Zugriff auf \textit{nicht} abgebildete Adresse führt zur Interrupt (\textit{Segmentation Fault}) durch \textit{MMU}
+	}
+\end{tabular}
+
+\textbf{Speicherverwaltung \textit{ohne} MMU / \textit{Adressumsetzung}}\\
+$\circ$ Alle Programme sind zur \textit{Link}-Zeit bekannt, Linker kann unterschiedliche Adressbereiche pro Programm zuordnen und\\
+\hspace*{1em}\textit{Sprungadressen} (d.h. Funktionsaufrufe) auflösen, es gibt ein Executable (\textit{Image})\\
+$\circ$ Wenn mehrere Programme dynamisch zur Laufzeit in den Hauptspeicher geladen werden sollen:\\
+\hspace*{1em}- unterschiedliche, zur \textit{Lade}-Zeit festgelegte Programmadressen (Sprünge bei Funktionsaufrufen)\\
+\hspace*{1em}- Der \textit{Loader} ersetzt Adressen zur \textit{Lade}-Zeit eines Programms (z.B. Ersetzen des Symbols einer Funktion $printf()$ durch Adresse,\\
+\hspace*{1em}\hspace*{1em}unter der Funktion tatsächlich verfügbar durch Symboltabelle - erst zur \textit{Ladezeit} bekannt)\\
+\hspace*{1em}- Verwendung von \textit{Position Independent Code} (PIC) da natürlich zur \textit{Compile}-Zeit absolute Sprünge nicht bekannt\\
+\hspace*{1em}\hspace*{1em}\textit{PIC} bedeutet die Verwendung von \textit{Relativsprüngen} (d.h. anstatt absoluter Sprung von $0x900 \rightarrow 0x1000$ wird relativer\\
+\hspace*{1em}\hspace*{1em}Sprung um $0x100$ eingetragen)
+
+\textbf{Speicherverwaltung \textit{mit} \textit{Adressumsetzung}}\\
+$\circ$ Einheitlicher, \textit{virtueller} Adressraum für Programme:
+\vspace*{-1.25em}
+\begin{itemize}
+	\setlength\itemsep{-1.25em}
+	\item beginnt bei 0, umfasst kompletten adressierbaren (Adressbusbreite) Adressbereich \textit{für jedes Programm}
+	\item Linker legt virtuelle Adressen in \textit{Executable} fest, Adressen werden nicht verändert, nur durch \textit{MMU} auf reale abgebildet\\
+	$\rightarrow$ schnelles Laden da keine Veränderung des Executables erforderlich (nur initiale Konfiguration der MMU)
+	\item Verwendung von \textit{Shared Libraries:} Mehrere \textit{Tasks} teilen sich (Code-) Segment\\
+	$\rightarrow$ beliebige, virtuelle Adresse durch Linker vergeben, Abbildung auf bereits geladene Shared Library durch MMU\\
+	$\Rightarrow$ Reduziert Hauptspeicherbedarf
+	\item Physikalischer Adressraum meist \textit{kleiner} als virtueller Adressraum
+	\item Abbildung durch \textit{Swappen} (=Auslagern des zugeordneten, physikalischen Speichers eines \textit{gesamten} Prozesses auf HDD)
+	\item Abbildung durch \textit{Paging} (=Auslagern selten genutzter Speicherseiten (4kByte-\textit{Pages}) auf HDD)
+	\item Swappen und Paging führen zu \textbf{Nichtdeterminismus}, für \textit{Echtzeitbetriebssysteme} also ungeeignet\\
+	\text{$\rightarrow$ Es ist nicht deterministisch, wann \& wie lange eine Page geswapped wird, auch nicht, wie lange das Laden aus HDD in RAM dauert}
+	
+\end{itemize}
+
+\textbf{Adressabbildung}\\
+$\circ$ Virtuelle Adresse (z.b. \textit{32}-Bit lang) besteht aus zwei Teilen: \textit{Seitendeskriptoradresse} [31:12] und \textit{Seitenoffset} [11:0]\\
+\hspace*{1em}- Seitenoffset (Adresse innerhalb einer 4kByte \textit{Page}) ist äquivalent zur physikalischen Adresse\\
+\hspace*{1em}- Über den \textit{Seitendeskriptor} wird die Adressierung der \textit{Page} vorgenommen\\
+\hspace*{1em}- \textit{Seitendeskriptor} enthält \textit{Zugriffsrechte} [15:12] und tatsächliche \textit{Page}-Nummer [11:0], Zugriffsrechte-Flags:\\
+\hspace*{1em}\hspace*{1em}- \textbf{Schreibflag:} $1 :=$ Page darf geschrieben werden, $0 :=$ Schreibzugriff führt zu \textit{Bus-Error}\\
+\hspace*{1em}\hspace*{1em}- \textbf{Datenflag:} $1: =$ Page darf gelesen werden, $0 :=$ Lesezugriff führt zu \textit{Bus-Error}\\
+\hspace*{1em}\hspace*{1em}- \textbf{Codezugriff:} $1 :=$ Prozessor darf \textit{Pageinhalt} als Befehl ausführen, $0 :=$ Versuch, Inhalt als Code auszuführen führt zu \textit{Bus-Error}\\
+\text{\hspace*{1em}\hspace*{1em}- \textbf{Validflag:} $1 :=$ Seite ist im Hauptspeicher, $0 :=$ Seite ausgelagert $\rightarrow$ \textit{Seite-Fehlt-Hardware-Interrupt} $\rightarrow$ \textit{Kernel} lädt Seite von HDD}
+
 \end{document}
