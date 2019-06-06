@@ -859,4 +859,102 @@ $\circ$ \textbf{Asynchroner Zugriff}: explizites Warten, Zugriff auf Gerät kehrt
 \text{\hspace*{1em}\hspace*{1em}- Beim gleichzeitigen Warten auf mehrere Kanäle verwenden, Flag $O\_NONBLOCK$ um Gerät via $open(...)$ nicht-blockierend zu öffnen}\\
 $\circ$ \textbf{Nicht blockierender Aufruf} (ähnlich zu blockierendem Lesezugriff):\\
 \hspace*{1em}- Liefert Ergebnis sofort wenn vorhanden, liefert andernfalls $\{$ Nichts zum Lesen vorhanden $\}$
+
+\subsection{Zeitdienste}
+\vspace*{-1.7em}
+\text{$\circ$ \textbf{Aufgaben:} zyklische Interruptgenerierung, Zeitmessung, Watchdog (\textit{Zeitüberwachung}), Zeitsteuerung für Dienste}\\
+\hspace*{1em}- Realisierung über \textit{Realzeituhren} / \textit{Timer}, sind \textbf{nicht} kontinuierlich sondern \textbf{diskret}\\
+
+\vspace*{-1.7em}
+\textbf{Zyklische Interruptgenerierung}\\
+$\circ$ \textbf{Systemzeit} (Ticks):\\
+\hspace*{1em}- Timer generiert zyklisch (z.B. alle $1 ms$) Interrupt, zugehörige \textit{ISR}:\\
+\hspace*{1em}\hspace*{1em}- ruft Scheduler auf, bearbeitet zeitabhängige Systemdienste (\textit{Weckrufe}), dient als \textit{Softwaretimer}\\
+\hspace*{1em}- Genauigkeit hängt von Zeitbasis ab\\
+$\circ$ Zyklische Bedienung von Interface-Karten (Taktgenerierung durch Bus-Controller)
+
+\newpage
+
+\textbf{Zeitmessung}\\
+$\circ$ Zuordnung hochgenauer Zeitstempel zu Ereignissen\\
+$\circ$ Berechnung von Geschwindigkeiten über Differenzzeitmessung (z.B. Fahrzeuge mit Lichtschranken)
+
+\vspace*{-1.25em}
+\textbf{Watchdog} (Zeitüberwachung):\\
+$\circ$ Zur Überwachung der Einhaltung von Echtzeitbedingungen\\
+$\circ$ Zur Zeitüberwachung einfacher Dienste (Datenausgabe, Peripherie)\\
+$\circ$ Zur Zeitüberwachung von Systemkomponenten, User-Interaktionen (\textit{Totmann} in Lokomotiven) oder des gesamten Systems\\
+$\circ$ Mechanismus:\\
+\hspace*{1em}- System muss in regelmäßigen Abständen einen rückwärts laufenden Timer zurücksetzen (d.h. Startwert neu setzen)\\
+\hspace*{1em}- Wenn System in undefiniertem Zustand und unfähig, Zähler zurückzusetzen, läuft dieser auf Null $\rightarrow$ löst \textit{Interrupt} aus:\\
+\hspace*{1em}\hspace*{1em}- Alarm / Fehlermeldung\\
+\hspace*{1em}\hspace*{1em}- Systemreset (entweder zuerst noch \textit{ISR} aufrufen und dann CPU-Reset oder direkt CPU-Reset)\\
+\hspace*{1em}\hspace*{1em}- \textbf{Problem:} Es gibt Momente, in denen \textit{ISR}s nicht ausgeführt werden (Interrupt Sperre), daher lieber direkt Reset!\\
+$\circ$ \textbf{Erstellen:} $WDOG\_ID$ $wdCreate$ $(void)$, \textbf{Löschen:} $wdDelete$ $(WDOG\_ID)$, \textbf{Starten:} $wdStart$ $(WDOG\_ID$, $delay$, $FUNCPTR$, $param)$,\\
+\hspace*{1em}\textbf{Abbrechen:} $wdCancel(WDOG\_ID)$
+
+\vspace*{-1.25em}
+\textbf{Zeitsteuerung für Dienste}:\\
+$\circ$ Ausführen spezifischer Aufgaben in regelmäßigen Abständen (Backups, Messwerte erfassen)
+
+\vspace*{-1.25em}
+\textbf{Zeitgeber}:\\
+$\circ$ \textit{Absolut}-Zeitgeber: Uhren (\textit{clocks}), \textit{Relativ}-Zeitgeber: Timer (\textit{timer})\\
+$\circ$ Realisierung in Hardware oder per Software via \textbf{Vorwärtszähler} / \textbf{Rückwärtszähler}\\
+\hspace*{1em}- \textbf{repetitive} Zähler: Zählwert wird nach Ablauf (Zählerstand = 0) selbstständig neu geladen\\
+\hspace*{1em}- \textbf{single shot} Zähler: expliziter Neustart erforderlich
+
+\vspace*{-1.25em}
+\textbf{Zugriff auf Zeitdienste - Hardwarelevel}:\\
+$\circ$ \textit{Zeit-bezogene} Hardware: Echtzeituhren (Absolutzeitgeber), Frequenzteiler, Vor- und Rückwärtszähler, Watchdog\\
+$\circ$ \textbf{Absolutzeitgeber:} Stellen Absolutzeit ($HH:mm:ss:ms$ $TT.MM.YYYY$) bereit, \textit{batteriegepuffert},\\
+\hspace*{1em}möglichst genau bei \textit{verteilten} Echtzeitsystemen
+
+\vspace*{-1.25em}
+\textbf{Zugriff auf Zeitdienste - Kernellevel}:\\
+$\circ$ Zyklische Timerinterrupts im Betriebssystemkern:\\
+\hspace*{1em}- Treiber können Tasks für variable Dauer in $\{$ wartend $\}$ versetzen\\
+\hspace*{1em}- Module können zyklischen oder einmaligen (zu einem Relativzeitpunkt) Funktionsaufruf zulassen\\
+$\circ$ \textbf{Vorsicht} bei Realzeit im Kernel (Sekunden statt Ticks): Abstand zwischen zwei Ticks kann von System zu System variieren\\
+$\circ$ \textbf{Zählerüberlauf:} Muss in allen Schichten geprüft werden - um darauf basierende Fehler möglichst früh zu erkennen:\\
+\hspace*{1em}$\rightarrow$ relative Zeit wird auf kurz vor Überlauf des Timers gesetzt!
+
+\vspace*{-1.25em}
+\textbf{Zugriff auf Zeitdienste - Userlevel}:\\
+\text{$\circ$ Absolutzeitanfragen z.B. mit $gettimeofday()$, um Prozess / Thread für definierte Zeit in Zustand $\{$ wartend $\}$ versetzen: $sleep(seconds)$}
+
+\vspace*{-1.25em}
+\textbf{Kritische Punkte}: in \textit{Kernelebene:} Relativzeit führt zu Zählerüberlauf; in \textit{User-Ebene:} Sommer-/Winterzeit, Schalttage, Zeitzone
+
+\vspace*{-1.25em}
+\textbf{Zeitdrift}:\\
+\text{$\circ$ Durch ungenaue Uhren, ungenaue Start-Systemzeit $\rightarrow$ \textit{Zeitsynchronisation} mit Broadcastmessages eines \textit{Zeitservers} (\textit{Mikrosekundenbereich})}\\
+\hspace*{1em}- Synchronisation mit \textit{Network Time Protocol} (NTP) / DCF77 / statistische Berechnungen
+
+\vspace*{-1.25em}
+\textbf{Zeitkorrektur}:\\
+$\circ$ \textbf{Problem:} Sprunghafte Korrektur von Absolutzeiten\\
+\hspace*{1em}- Zurückstellen: Zeitpunkte kommen doppelt vor\\
+\hspace*{1em}- Vorstellen: Zeitpunkte werden übersprungen\\
+\text{$\Rightarrow$ Abbremsen/Beschleunigen der Systemuhr: $adjtimex(struct$ $timex)$, keine doppelten/fehlenden Zeitpunkte, Zeit vergeht langsamer/schneller}\\
+$\circ$ Durch Downtime (Serverupdate) entfallen geplante Aktionen $\rightarrow$ durchgeführte Aktionen protokollieren und bei Neustart nachholen
+
+\vspace*{-1.25em}
+\textbf{Repräsentation von Zeit}:\\
+$\circ$ Absolutzeit: $struct$ $time\_t$ (Jahr, Wochentag, Monat, Tag, Stunde, Minute, Sekunde)\\
+$\circ$ Absoluttimer: $struct$ $timespec$ $\{tv\_sec$, $tv\_nsec\}$\\
+$\circ$ Relativzeiten und Zeitpunkte für Timer: $struct$ $itimerspec$ $\{it\_interval$, $it\_value\}$\\
+\hspace*{1em}- $it\_interval$ $\neq 0$: Timer startet Intervallweise, $it\_value$ $\neq 0$: Timer startet einmal in Absolutzeit $it\_value$\\
+\hspace*{1em}- $it\_interval$ $\neq 0$ \textbf{und} $it\_value$ $\neq 0$: Timer startet im Zeitpunkt $it\_value$ Intervallweise mit $it\_interval$
+
+\vspace*{-1.25em}
+\textbf{API für Zeitdienste}:\\
+$\circ$ Prozess für $n$ $ns$ schlafen legen: $nanosleep(timespec$ $request$, $timespec$ $remainder\_after\_signal)$\\
+\text{$\circ$ Uhrzeit abfragen/setzen/Auflösung: $clock\_gettime(clockid\_t$, $timespec)$\textbf{/}$clock\_settime(clockid\_t$, $const$ $timespec)$\textbf{/}$clock\_getres(clockid\_t$, $timespec)$}\\
+\text{$\circ$ Timer erzeugen/löschen/Ablauf: $timer\_create(clockid\_t$, $sigevent$, $timer\_t)$\textbf{/}$timer\_delete(timer\_t)$\textbf{/}$timer\_settime(timer\_t$, $itimerspec$ $val$, $itimerspec$ $remain)$}
+
+\newpage
+
+
+
 \end{document}
