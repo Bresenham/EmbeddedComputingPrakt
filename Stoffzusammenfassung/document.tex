@@ -735,15 +735,13 @@ $\circ$ Schnittstellenfunktion:
 \begin{itemize}
 	\setlength\itemsep{-1.25em}
 	\item \textit{Peripherie}-Zugriffe abgebildet durch:\\
-	- Lesen und Schreiben (\textit{read} und \textit{write})\\
-	\hspace*{1em}$write(fd, \&value, sizeof(value));$\\
-	- Konfigurieren (\textit{ioctl})\\
+	- Lesen und Schreiben (\textit{read} und \textit{write}): $read(fd, buf, count);$ bzw. $write(fd, \&value, sizeof(value));$\\
+	- Konfigurieren und Einstellen der Betriebsart per $ioctl(fd, request, ...)$\\
 	- Öffnen und Schließen (\textit{open} und \textit{close})\\
 	\hspace*{1em}- \textit{Open}-Funktion des Gerätetreibers wird aufgrund der \textit{System}-Call Parameter ausgewählt (z.B. \textit{serielle},  \textit{parallele},\\
-	\hspace*{1em}\hspace*{1em}oder \textit{analoge} Schnittstelle)\\
-	\hspace*{1em}$fd = open('Tuer', O\_RDWR);$\\
-	\hspace*{1em}$...$\\
-	\hspace*{1em}$close(fd);$
+	\hspace*{1em}\hspace*{1em}oder \textit{analoge} Schnittstelle): Gerät als Pfad mit Dateinamen, Zugriffsart per Flag angeben; gibt \textit{Descriptor} als Referenz zurück\\
+	\hspace*{1em}\hspace*{1em}$fd = open('Tuer', O\_RDWR);$\\
+	\hspace*{1em}- \textit{Close}-Funktion gibt \textit{Ressource} wieder frei: $close(fd);$
 	\item Anforderung einer \textit{Ressource} beim Betriebssystem ggf. Ablehnen aufgrund:\\
 	- fehlender Zugriffsrechte\\
 	- Ressource bereits belegt
@@ -755,5 +753,110 @@ $\circ$ \textit{Device} wird mit Namen sowie primären- und sekundären \textit{Id
 \hspace*{1em}- Führt dazu, dass primären Identifier eine Funktion $init\_module()\{...\}$ zum Initialisieren einer $struct$ $carrera\_table$ zugeordnet wird.\\
 \hspace*{1em}\hspace*{1em}Diese Struktur enthält \textit{Funktionspointer} zu \textit{Treiberfunktionen} wie $carrera\_open()\{...\}$, $carrera\_close\{...\}$, $carrera\_write()\{...\}$\\
 $\circ$ Codezeile $open('/dev/carrera', O\_RDWR);$ führt dazu, dass die bei $/dev/carrera$ bzw. in $carrera\_table$ hinterlegte Funktion\\
-\hspace*{1em}aufgerufen wird: $carrera\_open()\{...\}$
+\hspace*{1em}aufgerufen wird: $carrera\_open()\{...\}$\\
+\text{$\circ$ Entfernen eines \textit{Device}s per $rmmod$ $carrera$: es wird Funktion $cleanup\_module()\{...\}$ aufgerufen, die Zeichenkette $/dev/carrera$ wieder freigibt}
+
+\vspace*{-1.25em}
+\textbf{Warum Gerät nicht aus Applikation heraus ansteuern?}
+\vspace*{-1.25em}
+\begin{itemize}
+	\setlength\itemsep{-1.25em}
+	\item Einheitliche Ressourcenverwaltung von Interrupts \& I/O-Bereiche
+	\item Kapseln systemkritischer Teile\\
+	- Hardwarezugriffe aus Applikation erfordern Abbildung der HW-Adressen in Prozessadressraum\\
+	- Hardwarezugriffe sind \textit{sicherheitskritisch} $\rightarrow$ nur innerhalb eines Treibers durchführen\\
+	- Programmierfehler könnten zum Absturz des gesamten Systems führen
+	\item Überführen des Geräts in sicheren Zustand bei Applikationsfehlern\\
+	- Treiber sind nach Applikationsfehler im BS noch vorhanden\\
+	- Gerät wird bei Beendigung einer Applikation automatisch durch Treiber freigegeben\\
+	- Bei \textit{sicherheitskritischen} Systemen wesentlich!
+\end{itemize}
+
+\vspace*{-1.25em}
+\textbf{Gerätezugriff im Betriebssystem-Kern}\\
+\vspace*{-1.25em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.475]{images/geraetezugriff.png}} & \makecell[l]{
+		$\circ$ Geräte-Schnittstelle wird von Applikation benutzt während\\
+		\hspace*{1em}Treiber Funktionen realisieren, die von \textit{Kernel} selbst\\
+		\hspace*{1em}aufgerufen werden (z.B. \textit{ISR}s oder Funktionen in\\
+		\hspace*{1em}\textit{Kernel}- oder \textit{Timer}-Queues)\\
+		$\circ$ \textbf{Ziele:} - Verkürzung der \textit{ISR}-Zeit, da währenddessen weitere\\
+		\hspace*{1em}\hspace*{1em}Interrupts gesperrt\\
+		\hspace*{1em}- Verkürzen der Zeit im \textit{System-Call} (z.B. durch\\
+		\hspace*{1em}\hspace*{1em}\textit{Kernel-Thread}, der nur im \textit{Kernel} abgearbeitet\\
+		\hspace*{1em}\hspace*{1em}wird und solange läuft, bis er sich schlafen legt\\
+		\hspace*{1em}\hspace*{1em}oder seine Funktion mit $return$ verlässt - höchste Prio)\\
+		\hspace*{1em}- Periodische Vorgänge in Treibern ermöglichen ( \textit{Polling})\\
+		$\circ$ \textbf{Top Half:} wird gleich im Interrupt ausgeführt (befüllen der \\
+		\hspace*{1em}\textit{Kernel-Queue})\\
+		$\circ$ \textbf{Bottom Half:} wird in \textit{Kernel-Queue zurückgestellt}\\
+		\hspace*{1em}- Kernel-Queue wird abgearbeitet, bevor $return$ in \textit{User Space}\\
+		$\circ$ \textbf{Kernel-Queue:} Liste an (Treiber-)Funktionen, die der Kernel\\
+		\hspace*{1em}in bestimmten Zuständen abarbeitet, z.B. $open(...)$ \\
+		\hspace*{1em}oder $init\_module(...)$\\
+		$\circ$ Linux-Kernel wird aufgerufen:\\
+		\hspace*{1em}- Nach Abarbeitung aller Interrupts (auch \textit{Bottom Half},\\
+		\hspace*{1em}\hspace*{1em}hochpriore User-Threads auch Vorrang)\\
+		\hspace*{1em}- Vor Scheduling \& bei jedem Tick der Systemuhr
+	}
+\end{tabular}
+
+\newpage
+
+\textbf{Gerätezugriff im Betriebssystem-Kern}\\
+$\circ$ \textit{Timer-Queue:} Liste aus Paaren $(Treiberfunktion$, $Zeitpunkt)$: Zum Zeitpunkt wird Treiberfunktion abgearbeitet\\
+$\circ$ \textit{Big Kernel Lock:} Während etwas im Kernel ausgeführt wird, sind alle \textit{ISR}s gesperrt, gibt es heute nicht mehr
+
+\vspace*{-1.25em}
+\textbf{Latenzzeit}\\
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.325]{images/latenz.png}} & \makecell[l]{
+		$\circ$ \textbf{Reaktionszeit:} $t_R = t_V + t_W$ (Verarbeitungs- + Wartezeit)\\
+		$\circ$ \textbf{Hardware-Latency:} Zeit bis Hardware-Ereignis als Interrupt über Bus der CPU\\
+		\hspace*{1em}gemeldet wird (wenige \textit{Gatterlaufzeiten}, im $ns$-Bereich)\\
+		$\circ$ \textbf{Preemption-Delay:} \textit{OS} im kritischen, nicht unterbrechbaren\\
+		\hspace*{1em}Abschnitt (Interrupts gesperrt, bei Standard-OS ca. $10ms$)\\
+		$\circ$ \textbf{ISR:} Verarbeitungszeit der \textit{Interrupt-Service-Routine} (\textit{Systemanteil}),\\
+		\hspace*{1em}bei \textit{QNX} mit 200MHz Pentium: $1.4\mu s$\\
+		$\circ$ \textbf{System Call:} Verzögerung wenn Interrupt während eines \textit{System-Call}s auftritt,\\
+		\hspace*{1em}System-Call fertig stellen oder abbrechen (bei Standard-OS viele $ms$)\\
+		$\circ$ \textbf{Scheduling:} Bei \textit{QNX} mit 200MHz Pentium: $2.9\mu s$\\
+		$\circ$ \textbf{Context-Switch:} Aufwand, um anderen Task weiterzubearbeiten (sehr variable)\\
+		$\circ$ Schließlich Weiterbearbeitung höher priorer Tasks
+	}
+\end{tabular}
+
+\vspace*{-1.25em}
+\textbf{Filesysteme}\\
+$\circ$ Bei \textit{Embedded Systems} kaum Festplatten, viel eher:\\
+\hspace*{1em}- \textit{RAM}-Filesysteme (beim Starten aus persistentem Speicher geladen, beim Beenden zurückgeschrieben)\\
+\hspace*{1em}- \textit{EEPROM}, \textit{Flash} oder \textit{Solid State Drive}s\\
+$\circ$ Organisation mit Filesystemen wie \textit{FAT}, \textit{NTFS}, \textit{Ext3}\\
+\hspace*{1em}- schneller Zugriff \& wenig Overhead für Verwaltungsinformationen\\
+$\circ$ Verwendung von \textit{Caches}:\\
+\hspace*{1em}- Daten temporär inkonsistent, kein zeitlicher Determinismus bei Zugriff (man weiß nicht, wann und ob welcher\\
+\hspace*{1em}\hspace*{1em}Speicherbereich im Cache liegt)\\
+\hspace*{1em}- \textit{Sync-Mode} $\rightarrow$ keine Verwendung von Caches sondern explizit synchronisieren
+
+\vspace*{-1.25em}
+\textbf{Synchronisation}\\
+$\circ$ \textbf{Zugriffszeit}: Zeit zwischen Auftrag und Erfüllung des Auftrags, Mechanismen zur Synchronisation von Prozessen mit Gerätezugriff\\
+$\circ$ \textbf{Synchroner Zugriff}: implizites Warten, auf Gerät wartender \textit{Task} wird schlafen gelegt bis:\\
+\hspace*{1em}- Gerät antwortet, Fehlersituation (z.B. \textit{Timeout}) eintritt oder \textit{Task} ein \textit{Signal} erhält\\
+$\circ$ \textbf{Asynchroner Zugriff}: explizites Warten, Zugriff auf Gerät kehrt sofort zurück:\\
+\text{\hspace*{1em}- Task kann weiterarbeiten; Mitteilung durch OS an Task via Polling / Ereignis (\textit{Signal}) / \textit{Callback}-Funktion: Task holt Ergebnis ab}\\
+\hspace*{1em}- \textbf{Probleme:}\\
+\hspace*{1em}\hspace*{1em}- Mehrere Aufträge können gleichzeitig vorliegen, Dienste müssen sich daher auf selben Auftrag beziehen können\\
+\hspace*{1em}\hspace*{1em}- ggf. wird \textit{Dienstkette} $\{$ Auftragstatus ermitteln $\}$ $\rightarrow$ $\{$ Ergebnis holen $\}$ nicht bis zum Ende einer Applikation beendet\\
+\hspace*{1em}\hspace*{1em}- Zustandsverwaltung im OS erforderlich\\
+\hspace*{1em}- async. Zugriff mit \textbf{nicht}-blockierenden Diensten:\\
+\hspace*{1em}\hspace*{1em}- Leseauftrag $\rightarrow$ Warten auf Ergebnis $\rightarrow$ Ergebnis holen (Polling, Signal / Schlafen, Signal / Callback)\\
+\hspace*{1em}\hspace*{1em}- Höhere Performance (Audio, Video, Netzwerk, Datenbanken) + besseres Antwortverhalten\\
+\hspace*{1em}\hspace*{1em}- Umgesetzt über Funktionen wie $aio\_read$, $aio\_write$, $aio\_fsync$ (z.B. Sync. zwischen Cache und Festplatte)\\
+\hspace*{1em}- async. Zugriff \textbf{mit} Thread und \textbf{blockierendem} Aufruf:\\
+\hspace*{1em}\hspace*{1em}- Thread erzeugen $\rightarrow$ im Thread blockierend auf Ressource zugreifen $\rightarrow$ Thread-Ende abwarten\\
+\text{\hspace*{1em}\hspace*{1em}- Beim gleichzeitigen Warten auf mehrere Kanäle verwenden, Flag $O\_NONBLOCK$ um Gerät via $open(...)$ nicht-blockierend zu öffnen}\\
+$\circ$ \textbf{Nicht blockierender Aufruf} (ähnlich zu blockierendem Lesezugriff):\\
+\hspace*{1em}- Liefert Ergebnis sofort wenn vorhanden, liefert andernfalls $\{$ Nichts zum Lesen vorhanden $\}$
 \end{document}

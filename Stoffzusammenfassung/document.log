@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7050 64-bit) (preloaded format=pdflatex 2019.6.1)  5 JUN 2019 21:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7050 64-bit) (preloaded format=pdflatex 2019.6.1)  6 JUN 2019 19:58
 entering extended mode
 **./document.tex
 (document.tex
@@ -1788,28 +1788,63 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [8 <./images/mmu.png>]
+Overfull \hbox (39.70934pt too wide) in paragraph at lines 751--758
+[] 
+ []
+
+<images/geraetezugriff.png, id=133, 632.3625pt x 545.78906pt>
+File: images/geraetezugriff.png Graphic file (type png)
+<use images/geraetezugriff.png>
+Package pdftex.def Info: images/geraetezugriff.png  used on input line 779.
+(pdftex.def)             Requested size: 300.3753pt x 259.25249pt.
+
+Overfull \hbox (75.36952pt too wide) in paragraph at lines 776--804
+ [] 
+ []
+
+
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
-[9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 759.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 759.
+[9 <./images/geraetezugriff.png>]
+<images/latenz.png, id=140, 740.0147pt x 287.57437pt>
+File: images/latenz.png Graphic file (type png)
+<use images/latenz.png>
+Package pdftex.def Info: images/latenz.png  used on input line 814.
+(pdftex.def)             Requested size: 240.50192pt x 93.46056pt.
+
+Overfull \hbox (73.1564pt too wide) in paragraph at lines 812--829
+[] 
+ []
+
+
+Overfull \hbox (19.91321pt too wide) in paragraph at lines 843--862
+[] 
+ []
+
+
+Overfull \vbox (1.79988pt too high) has occurred while \output is active []
+
+
+[10 <./images/latenz.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 862.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 862.
  (document.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 759.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 759.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 862.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 862.
 Package rerunfilecheck Info: File `document.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 759.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 862.
  ) 
 Here is how much of TeX's memory you used:
- 24987 strings out of 492895
- 454249 string characters out of 3133483
+ 24998 strings out of 492895
+ 454490 string characters out of 3133483
  839951 words of memory out of 3000000
- 28332 multiletter control sequences out of 15000+200000
+ 28340 multiletter control sequences out of 15000+200000
  36001 words of font info for 73 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,18n,100p,9089b,1443s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1833,9 +1868,9 @@ ram Files/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.
 9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
 c/lm/lmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb><C:
 /Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on document.pdf (9 pages, 1076838 bytes).
+Output written on document.pdf (10 pages, 1173436 bytes).
 PDF statistics:
- 274 PDF objects out of 1000 (max. 8388607)
- 66 named destinations out of 1000 (max. 500000)
- 262 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 282 PDF objects out of 1000 (max. 8388607)
+ 67 named destinations out of 1000 (max. 500000)
+ 272 words of extra memory for PDF output out of 10000 (max. 10000000)
 
