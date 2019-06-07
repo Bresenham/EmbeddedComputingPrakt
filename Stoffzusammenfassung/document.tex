@@ -955,6 +955,336 @@ $\circ$ Prozess für $n$ $ns$ schlafen legen: $nanosleep(timespec$ $request$, $ti
 
 \newpage
 
+\vspace*{-2.5em}
+\section{Programmiertechniken bei Echtzeitbetriebssystemen}
+\subsection{Verschiedene Programmiersprachen}
+\vspace*{-1.75em}
+$\circ$ \textbf{Assembler:} selten, bei zeitkritischen Anwendungen; \textbf{C:} \textit{Die} Programmiersprache für \textit{Embedded Systems}\\
+\hspace*{1em}\textbf{C++:} Seltener als C, tiefes Wissen für Effizient erforderlich; \textbf{ADA:} Schöne, typsichere Sprache, schwer \textit{hardwarenah} programmierbar\\
+\hspace*{1em}\textbf{Java:} weit verbreitet, hohe Produktivität, \textit{aber:} nicht deterministisch durch Garbage-Collection / Memory-Management $\rightarrow$ \textit{RT}-Java
 
+\subsection{Endliche Zustandsautomaten (\textit{Finite State Machines})}
+\vspace*{-1.75em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.4]{images/zustandsautomat.png}} & \makecell[l]{
+		$\circ$ Weit verbreitetes \textit{Paradigma} bei Ereignis-orientierten Systemen\\
+		$\circ$ Bestehen aus einer Anzahl an \textbf{Zuständen}, \textbf{Ereignissen}, \textbf{Transitionen} \& \textbf{Ausgaben}\\
+		$\circ$ System befindet sich zu \textit{einer} Zeit in genau \textit{einem} Zustand\\
+		$\circ$ Eintretendes Ereignis führt zu Zustandsübergang in einen \textit{Folgezustand}\\
+		$\circ$ Übersichtlich Implementierbar: allgemeiner Interpreter (\textit{switch-case}) oder Beschreibung (\textit{Automatentafel})\\
+		$\circ$ Geeignet für \textbf{digitale} (also \textit{diskrete}) Ereignisse bzw. Zustände (\textbf{nicht} für analoge, kontinuierliche Zustände)\\
+		$\circ$ Überprüfung des \textit{Abdeckungsgrades} als auch der Laufzeit (deterministisch) möglich
+	}
+\end{tabular}
+
+\subsection{Richtlinien zur Entwicklung eingebetteter Systeme}
+\vspace*{-1.75em}
+$\circ$ Zerlegung einer Aufgabe auf mehrere (\textit{konkurrierende} und \textit{kooperierende}) Tasks zur schritthaltenden Verarbeitung (\textit{Multitasking})\\
+$\circ$ Unterbrechbarkeit (\textit{Preemption}) der Tasks\\
+$\rightarrow$ \textbf{Kontrollfluss:} Synchronisation zwischen Tasks mit \textit{Semaphore} \& Events\\
+$\rightarrow$ \textbf{Datenaustausch:} Inter-Prozess-Kommunikation (\textit{IPC}) zwischen Tasks\\
+$\rightarrow$ \textbf{Scheduling:} Priorisierung der Tasks
+
+\subsection{Kontrollfluss am Beispiel der \textit{Pathfinder Mars-Mission}}
+\vspace*{-1.75em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.3275]{images/pathfinder_01.png}} & \makecell[l]{
+		$\circ$ \textbf{Z-Task:} Periodische Zustandsüberwachung (Temperatur, Ströme),\\
+		\hspace*{1em}hat \textbf{mittlere} Priorität\\
+		$\circ$ \textbf{M-Task:} Erfassung meteorologischer Messwerte, hat \textbf{niedrigste}\\
+		\hspace*{1em}Priorität\\
+		$\circ$ \textbf{Bus-Management-Task:} Datenaustausch über Informations-Bus,\\
+		\hspace*{1em}hat \textbf{höchste} Priorität\\
+		$\circ$ \textbf{RK:} Belegung des Rechnerkerns\\
+		$\circ$ \textbf{S:} Wert der \textit{Semaphore} für den Informationsbus\\
+		$\circ$ \textbf{Konkurrierende Prozesse:} \textit{M}- und \textit{B}-Task \textit{konkurrieren} um\\
+		\hspace*{1em}Zugriff auf Daten (sind \textbf{nicht} disjunkt)\\
+		$\circ$ \textbf{Kooperierende Prozesse:} Prozess liefert Daten für anderen\\
+		\hspace*{1em}(\textit{Erzeuger}-\textit{Verbraucher}-\textit{Modell}) - ebenfalls \textbf{nicht} disjunkt\\
+		$\circ$ \textbf{Disjunkte Prozesse:} Ablauf eines Prozesses/Threads\\
+		\hspace*{1em}unabhängig von anderen (ebenfalls disjunkten) Prozessen\\
+		$\Rightarrow$ Die Wirkung der gegenseitigen Beeinflussung von \textit{nicht}\\
+		\hspace*{1em}disjunkten, parallelen Prozessen ohne Synchronisation ist \textit{nicht}\\
+		\hspace*{1em}vorhersagbar und im Regelfall auch \textit{nicht} reproduzierbar
+	}
+\end{tabular}
+
+\subsection{Kritischer Bereich}
+\vspace*{-1.75em}
+\textbf{Race Condition}\\
+$\circ$ Unsynchronisierter Zugriff mehrerer Threads bzw. auf Prozesse auf \textit{dieselben} Daten:
+\vspace*{-1.25em}
+\begin{itemize}
+	\setlength\itemsep{-1.25em}
+	\item Ergebnis/Konsistenz vom Prozessfortschritt abhängig (z.B. \textit{Ringpuffer}) $\rightarrow$ Race conditions \textit{unbedingt} vermeiden
+	\item \text{Lösung: \textit{Gegenseitiger Ausschluss} (Mutual Exclusion) $\rightarrow$ höchstens \textit{ein} Prozess tritt in kritischen Abschnitt ein, abgesichert durch \textbf{Mutex}}
+\end{itemize}
+
+\vspace*{-1.75em}
+\noindent\begin{minipage}{.45\textwidth}
+	\begin{lstlisting}[caption=Prozess 1,frame=tlrb]{Name}
+	i := read(counter); /* Liest 0 */
+	/* Context-Switch zu Prozess 2 */
+	i++;
+	write(counter, i);
+	/* Schreibt ebenfalls 1 zurück */
+	\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+	\begin{lstlisting}[caption=Prozess 2,frame=tlrb]{Name}
+	i := read(counter); /* Liest 0 */
+	i++;
+	write(counter, i);
+	/* Schreibt 1 zurück*/
+	\end{lstlisting}
+\end{minipage}
+
+\newpage
+
+\vspace*{-2.75em}
+\textbf{Binäre Semaphore vs Mutex}\\
+$\circ$ Binäre Semaphore (hat Werte 0 \& 1): exklusive Verwendung zum Erzeugen von Ereignisses im Erzeuger-Verbraucher-Problem\\
+$\circ$ Mutex: exklusive Verwendung als \textit{Rekursiver Mutex}:\\
+\hspace*{1em}- Wenn der Prozess bereits einen Mutex inne hat, der bei einem weiteren kritischen Abschnitt (z.B. über einen Funktionsaufruf)\\
+\hspace*{1em}\hspace*{1em}wieder benötigt wird, darf der Prozess eintreten, da er den Mutex ja bereits besitzt. Das erste Freigeben des Mutex\\
+\text{\hspace*{1em}\hspace*{1em}(z.B. am Ende der aufgerufenen Funktion) ist nicht wirksam, er besitzt ja immer noch den Mutex für den ersten kritischen Abschnitt},\\
+\hspace*{1em}\hspace*{1em}erst nach dem Verlassen diesen Abschnitts wird der Mutex freigegeben:
+
+\vspace*{-1.75em}
+\noindent\begin{minipage}{.45\textwidth}
+	\begin{lstlisting}[caption=Funktion 1,frame=tlrb]{Name}
+	func init() {
+		lock();
+		/* do something */
+		unlock();
+	}
+	\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+	\begin{lstlisting}[caption=Funktion 2,frame=tlrb]{Name}
+	func main() {
+		/* Mutex initial genommen */
+		lock();
+		init();
+		/* Mutex wieder freigeben */
+		unlock();
+	}
+	\end{lstlisting}
+\end{minipage}
+
+\vspace*{-1.75em}
+\textbf{Semaphore}\\
+$\circ$ Synchronisationswerkzeug: Zur Signalisierung bei Erzeuger/Verbraucher (Erzeuger \textit{gibt} Semaphore, Verbraucher \textit{nimmt} Semaphore)\\
+$\circ$ Bei gegenseitigem Ausschluss: Semaphore nehmen bei Betreten und geben bei Verlassen\\
+$\circ$ \textit{Integer}-Variable, wir zu Beginn auf Maximalwert $N$ initialisiert (= Anzahl Prozesse, die kritischen Bereich betreten dürfen)\\
+\text{$\circ$ \textbf{P-Operation} (Semaphore nehmen): Bei Zugriff auf Semaphore wird Wert um 1 verringert \& Prozess schlafen gelegt, falls Wert negativ}\\
+\text{$\circ$ \textbf{V-Operation} (Semaphore geben): Bei Freigabe einer Semaphore wird Wert um 1 erhöht \& ein wartender Prozess geweckt, falls Wert $\leq 0$}
+
+
+\subsection{Kritischer Bereich und Prioritätsinversion am Beispiel der \textit{Pathfinder Mars-Mission}}
+\vspace*{-1.75em}
+\begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.3275]{images/pathfinder_02.png}} & \makecell[l]{
+		$\circ$ Niedrig-priore $M-Task$ läuft, belegt Semaphore\\
+		$\circ$ Hoch-priore $B-Task$ fängt an zu laufen, erkennt, dass Semaphore belegt\\
+		\hspace*{1em}$\rightarrow$ legt sich wieder schlafen\\
+		$\circ$ $Z-Task$ läuft an, verdrängt $M-Task$ aufgrund höherer Priorität, läuft bis fertig\\
+		$\circ$ Anschließend läuft zuvor gelaufener $Z-Task$ wieder an, nach einiger Zeit gibt\\
+		\hspace*{1em}es \textit{Watchdog}-Error da $B-Task$ zu lange nicht drann kam\\
+		$\circ$ \textbf{Prioritätsinversion:}\\
+		\hspace*{1em}- Tasks unterschiedlicher Priorität: \textbf{Hoch} ($B-Task$), \textbf{Mittel} ($Z-Task$),\\
+		\hspace*{1em}\hspace*{1em}\textbf{Niedrig} ($M-Task$)\\
+		\hspace*{1em}- \textbf{Hoch} \& \textbf{Niedrig} mit gemeinsamen, kritischen Bereich\\
+		\hspace*{1em}- \textbf{Niedrig} ist im kritischen Bereich, wenn \textbf{Hoch} ebenfalls betreten will\\
+		\hspace*{1em}- \textbf{Hoch} wartet, bis \textbf{Niedrig} Bereich wieder verlässt\\
+		\hspace*{1em}- \textbf{Mittel} verdrängt \textbf{Niedrig} $\rightarrow$ \textbf{Hoch} muss auf\\
+		\hspace*{1em}\hspace*{1em}Beenden von \textbf{Mittel} warten\\
+		\hspace*{1em}$\Rightarrow$ \textbf{Mittel} ist somit höherprior als \textbf{Hoch}
+	}
+\end{tabular}
+
+\textbf{Lösung der Prioritätsinversion durch Prioritätsvererbung (\textit{Priority Inheritance Protocol})}\\
+$\circ$ Sobald \textbf{Hoch} kritischen Bereich betreten will, ist es wichtig, dass dieser wieder freigegeben wird, \textbf{Niedrig} aber \textit{zu unwichtig}\\
+$\circ$ Lösung: Priorität von \textbf{Hoch} auf \textbf{Niedrig} für die Zeit der Abarbeitung des kritischen Bereiches übertragen\\
+$\circ$ \textbf{Allgemein:} Falls Job \textbf{Hoch} Semaphore anfordert, welche gegenwärtig von Job \textbf{Niedrig} gehalten wird, dann wird Priorität von \textbf{Niedrig}\\
+\hspace*{1em}auf die Priorität von \textbf{Hoch} angehoben, sobald der Job \textbf{Niedrig} Semaphore wieder freigibt, bekommt er initiale Priorität zurück
+
+\vspace*{-1.25em}
+\textbf{Lösung der Prioritätsinversion durch \textit{Priority Ceiling Protocol}}\\
+\text{$\circ$ Anheben der Priorität des Tasks \textbf{Niedrig} auf Priorität des höchstprioren Tasks, mit dem er sich Ressourcen teilt (kann Deadlocks verhindern)}\\
+$\circ$ Schwer zu implementieren da kritische Bereiche und Tasks, die diese verwenden, dem Scheduler bekannt sein müssen
+
+\vspace*{-1.25em}
+\textbf{Deadlock}\\
+$\circ$ \textit{Critical Sections} können zu Verklemmungen (\textit{Deadlocks}) führen (\textbf{Task A} ruft $P(S_1)$ auf, \textbf{Task B} ruft $P(S_2)$ auf,\\
+\hspace*{1em}\textbf{Task A} wartet nun auf $S_2$, \textbf{Task B} auf $S_1$
+
+\vspace*{-1.25em}
+\textbf{Schreib-/Lese Locks}\\
+$\circ$ Race-Condition nur dann kritisch, wenn Rechenprozesse Daten \textit{modifizieren}, reines \textit{Lesen} unkritisch $\rightarrow$ \textit{Spezielle Semaphore} erlauben\\
+\hspace*{1em}\text{parallelen Lesezugriff, Schreibzugriff \textbf{nur} exklusiv: Rechenprozess teilt bei Anforderung des Mutexes mit, ob er Lesen oder Schreiben will}\\
+
+\newpage
+
+\hspace*{1em}\textbf{1.} Kritischer Abschnitt frei $\rightarrow$ Zugriff gewährt\\
+\hspace*{1em}\textbf{2.} Lesender Prozess belegt Critical Section $\rightarrow$ Schreibender Prozess wird blockiert, lesender zugelassen\\
+\hspace*{1em}\textbf{3.} Schreibender Prozess belegt Critical Section $\rightarrow$ Prozess wird abgewiesen, egal ob lesend oder schreibend
+
+\vspace*{-1.25em}
+\textbf{Weitere Schutzmaßnahmen}\\
+$\circ$ Semaphore \textbf{nur} zum Schutz kritischer Abschnitte für Prozesse im \textbf{User-Bereich}\\
+$\circ$ Kernel-Ebene: \textbf{Unterbrechungsschutz} (Interrupts für die Zeit des Zugriffs auf kritischen Abschnitt sperren, Latenzzeiten kurz halten)\\
+$\circ$ Kernel-Ebene bei \textit{Multiprozessorsystemen} (mehrere \textit{ISR}s können \textit{echt parallel} bearbeitet werden, \textit{Unterbrechungsschutz} hilft nicht):\\
+\text{\hspace*{1em}\textbf{Spinlock}: Gemeinsame Variable entscheidet, ob Critical Section betreten werden darf (\textit{Busy waiting} - Polling eines Flags, falls besetzt)}\\
+\hspace*{1em}\hspace*{1em}- Spinlock kehrt im Einprozessorsystem nicht zurück - \textbf{nicht verwenden}
+
+\vspace*{-1.5em}
+\begin{center}
+	\begin{tabular}{c|c|c|c}
+		\textbf{Methode} & \textit{User Level} & \textit{Einprozessorsystem}: Kernel Level & \textit{SMP}: Kernel Level\\
+		\hline
+		Unterbrechungssperre & Nein & Ja & Nein\\
+		Spinlock & Nein & Nein & Ja\\
+		Semaphore & Ja & Ja & Ja
+	\end{tabular}
+\end{center}
+
+\subsection{Events}
+\vspace*{-1.75em}
+$\circ$ Task wartet auf ein Event (Ereignis), andere Task setzt/signalisiert Event (mit \textit{Semaphore} oder \textit{Message-Queue} realisiert)
+
+\subsection{Condition Variable}
+\vspace*{-1.75em}
+$\circ$ Ist ein \textit{Event}, das an die Änderung einer Bedingung (z.B. Überschreiten eines Puffer-Füllständes) geknüpft ist, \textbf{3 Dinge} zusammen:\\
+\hspace*{1em}- \textbf{Condition Variable} := Event, wenn Bedingung sich ändert\\
+\hspace*{1em}- \textbf{Global (shared) Variable} := Variable, über die Bedingung formuliert ist\\
+\hspace*{1em}- \textbf{Mutex} := sichert Bereich $\{$ Überprüfen der Bedingung/Warten auf Veränderungssignal $\}$ ab
+
+\vspace*{-1em}
+\begin{center}
+	\begin{lstlisting}[basicstyle=\small]
+		pthread_mutex_t spar_lock;
+		pthread_cond_t spar_aenderung;
+		unsigned int erspartes;
+		
+		void ausgeben(int menge) {
+			pthread_mutex_lock(&spar_lock);
+			while(erspartes < menge) {
+				/* gibt 'spar_lock' frei, damit einzahlen überhaupt
+				 * möglich ist, ansonsten gäbe es 'Deadlock'
+				 */
+				pthread_cond_wait(&spar_aenderung, &spar_lock);
+			}
+			erspartes -= menge;
+			pthread_mutex_unlock(&spar_lock);
+		}
+		
+		void einzahlen(int menge) {
+			pthread_mutex_lock(&spar_lock);
+			erspartes += menge;
+			pthread_cond_broadcast(&spar_aenderung);
+			pthread_mutex_unlock(&spar_lock);
+		}
+	\end{lstlisting}
+\end{center}
+
+\vspace*{-1.75em}
+\subsection{Signale}
+\vspace*{-1.75em}
+$\circ$ \textit{Signal} führt zu Unterbrechung des Programmablaufs innerhalb einer Applikation:\\
+\hspace*{1em}- Programm wird abgebrochen ($exit()$)\\
+\hspace*{1em}- Programm reagiert mit implementierten $Signal-Handler()$ (ähnlich zu einer \textit{Interrupt-Service-Routine})\\
+$\circ$ \textit{Signal} kann ausgelöst werden durch:\\
+\hspace*{1em}- Programm\\
+\hspace*{1em}- Ereignisse innerhalb des Betriebssystems selbst: Zugriff auf nicht vorhandenen Speicherbereich ($\rightarrow$ \textit{Segmentation-Fault-Signal}\\
+\hspace*{1em}- ggf. Abfangen um noch wichtige Daten zu sichern
+
+\vspace*{-1.75em}
+\begin{center}
+	\begin{tabular}{c|c}
+		\textbf{Signale} & \textbf{Events}\\
+		\hline
+		\makecell[c]{Kommen \textit{asynchron} zum Programmablauf\\werden \textit{asynchron} verarbeitet} & \makecell[c]{Kommen \textit{synchron} zum Programmablauf\\werden \textit{synchron} verarbeitet}\\
+		Ähnlich zu \textit{Interrupt-Service-Routine} & \textit{Rendezvous}-Charakter
+	\end{tabular}
+\end{center}
+
+\newpage
+
+$\circ$ \textbf{Signale} führen außerdem zum sofortigen Abbrechen eines gerade aktiven, blockierenden \textit{System-Calls}\\
+$\rightarrow$ Jeden Systemcall überprüfen, ob durch Signal unterbrochen ($errno$ $=$ $EINTR$) \& \textit{neu} aufsetzen falls ja\\
+$\circ$ $sigaction(signum$, $struct$ $sigaction$ $*act$, $sigaction)$: $*act$ enthält Adresse des \textit{Signal-Handlers}, der bei Signal von OS aufgerufen wird\\
+$\circ$ $kill(pid\_t$, $sig)$: einem \textit{Task} oder einer \textit{Task-Gruppe} wird ein Signal geschickt
+
+\subsection{Message Queues}
+\vspace*{-1.75em}
+$\circ$ Zum Transport von Daten zwischen Tasks (\textit{Inter-Prozess-Kommunikation})\\
+$\circ$ Daten mit unterschiedlicher, nach oben begrenzter Größe von Task $A$ nach Task $B$ senden\\
+$\circ$ Über Filesystem mit $Namen$, \textit{task-intern} per \textit{Message Queue ID} identifiziert\\
+$\circ$ Blockierendes Senden (Queue voll) \& Empfangen (Queue leer)
+
+\subsection{Shared Memory}
+\vspace*{-1.75em}
+$\circ$ Gemeinsamer Speicherbereich (= globale Variable(n)), Realisierung \textit{trivial} - aber \textit{Critical Section} nicht vergessen\\
+$\circ$ Realisierung z.B. über OS-Filesystem, da Speicheradresse von Task zu Task unterschiedlich sein kann, sollte sie innerhalb von\\
+\hspace*{1em}Datenstrukturen relativ zu Beginn des Speicherbereichs angegeben werden
+
+\subsection{Sockets}
+\vspace*{-1.75em}
+$\circ$ Kommunikation über Rechnergrenzen hinweg (aber auch \textit{lokal}) möglich\\
+$\circ$ Verbindung identifiziert über $Rechnername[IP]$ + $Port$-$Nummer$: \textit{Server} öffnet Port (bei TCP zusätzlich Handshake),\\
+\hspace*{1em}\textit{Client} öffnet Verbindung \& sendet an Server
+
+\subsection{Busy-Loops}
+\vspace*{-1.75em}
+$\circ$ Echtzeitsteuerung ist nur mit der Regelung \textbf{eines einzigen} technischen Prozesses beschäftigt ($volatile$ bei Pollen nicht vergessen)\\
+$\circ$ Rechnerprozess pollt ständig technischen Prozess nach Anforderungen; ist einfach programmierbar, kein OS nötig, sehr häufig vertreten
+\vspace*{-1.75em}
+\begin{center}
+	\begin{lstlisting}
+	while(True) {
+		Lese Wert ein
+		Bearbeite Aufgabe
+		Warte (100ms)
+	}
+	\end{lstlisting}
+\end{center}
+\vspace*{-1.5em}
+
+\subsection{Time-Triggered}
+\vspace*{-1.75em}
+$\circ$ Applikation prüft zyklisch, ob bestimmte Bedingung erfüllt ist (Zeitbasis aus dem Betriebssystem, Peripherie ist \textbf{rein passiv}\\
+\text{$\circ$ Abtastzeit so kurz wählen, dass: kein Zustand verloren geht (\textit{Abtasttheorem}) / Reaktion rechtzeitig erfolgen kann (\textbf{2. Echtzeitbedingung})}
+\vspace*{-1.75em}
+\begin{center}
+	\begin{lstlisting}
+	while(True) {
+		Sende Ereignis in 100ms
+		/* Verarbeitungszeit */
+		Lese Wert ein
+		Bearbeite Aufgabe
+		/* Wartezeit */
+		Warte auf Ereignis
+	}
+	\end{lstlisting}
+\end{center}
+\vspace*{-1.5em}
+
+\subsection{Event Triggered}
+\vspace*{-1.75em}
+$\circ$ Applikation reagiert auf Ereignisse/(Software-)\textit{Interrupts}, die von anderen Tasks oder dem OS (z.B. \textit{Treiber}) generiert werden\\
+$\circ$ Im Regelfall am effizientesten; Zeitbasis (\textit{isochroner Modus} von Echtzeitbuss) häufig exakter als im Betriebssystem\\
+\text{$\circ$ \textit{Determinismus} hängt von zeitlicher Verteilung der externen Events ab (z.B. Überlastung des Systems wenn Benutzer ganz oft Knopf drückt)}\\
+\hspace*{1em}Kein Einfluss auf Häufigkeit der Events (ggf. \textbf{nicht echtzeitfähig})
+\vspace*{-1.75em}
+\begin{center}
+	\begin{tabular}{c|c}
+		\textbf{Verfahren} & \textbf{Charakteristik}\\
+		\hline
+		\textit{Busy-Loop} & 100\% Auslastung, unabhängig vom Bedarfsfall\\
+		\textit{Time-Triggered} & \makecell[c]{Auslastung abhängig vom gewählten Abtastintervall,\\unabhängig vom Bedarfsfall}\\
+		\textit{Event-Triggered} & \makecell[c]{Auslastung abhängig vom Bedarfsfall}
+	\end{tabular}
+\end{center}
 
 \end{document}
