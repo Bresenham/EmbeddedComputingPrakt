@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7050 64-bit) (preloaded format=pdflatex 2019.5.31)  8 JUN 2019 14:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7050 64-bit) (preloaded format=pdflatex 2019.5.31)  23 JUN 2019 14:39
 entering extended mode
 **./document.tex
 (document.tex
@@ -1684,22 +1684,34 @@ Overfull \hbox (20.99356pt too wide) in paragraph at lines 369--383
 []
  []
 
-<images/puenktlich.png, id=41, 538.26094pt x 260.47313pt>
-File: images/puenktlich.png Graphic file (type png)
-<use images/puenktlich.png>
-Package pdftex.def Info: images/puenktlich.png  used on input line 395.
-(pdftex.def)             Requested size: 174.93272pt x 84.65276pt.
 
-Overfull \hbox (51.27576pt too wide) in paragraph at lines 394--404
-[]
+Underfull \hbox (badness 10000) in paragraph at lines 369--383
+
  []
 
+<images/echtzeitbetrieb_beispiel.png, id=41, 630.10406pt x 338.01282pt>
+File: images/echtzeitbetrieb_beispiel.png Graphic file (type png)
+<use images/echtzeitbetrieb_beispiel.png>
+Package pdftex.def Info: images/echtzeitbetrieb_beispiel.png  used on input lin
+e 384.
+(pdftex.def)             Requested size: 267.79549pt x 143.65611pt.
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
-[3 <./images/auslastung.png> <./images/puenktlich.png>]
-Overfull \hbox (36.10858pt too wide) in paragraph at lines 410--443
+[3 <./images/auslastung.png> <./images/echtzeitbetrieb_beispiel.png>]
+<images/puenktlich.png, id=59, 538.26094pt x 260.47313pt>
+File: images/puenktlich.png Graphic file (type png)
+<use images/puenktlich.png>
+Package pdftex.def Info: images/puenktlich.png  used on input line 399.
+(pdftex.def)             Requested size: 174.93272pt x 84.65276pt.
+
+Overfull \hbox (51.27576pt too wide) in paragraph at lines 398--408
+[]
+ []
+
+
+Overfull \hbox (36.10858pt too wide) in paragraph at lines 411--444
 [] 
  []
 
@@ -1707,15 +1719,15 @@ Overfull \hbox (36.10858pt too wide) in paragraph at lines 410--443
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
-[4]
-<images/betriebssystemkern.png, id=65, 633.11531pt x 532.99126pt>
+[4 <./images/puenktlich.png>]
+<images/betriebssystemkern.png, id=67, 633.11531pt x 532.99126pt>
 File: images/betriebssystemkern.png Graphic file (type png)
 <use images/betriebssystemkern.png>
-Package pdftex.def Info: images/betriebssystemkern.png  used on input line 520.
+Package pdftex.def Info: images/betriebssystemkern.png  used on input line 521.
 
 (pdftex.def)             Requested size: 253.24162pt x 213.19272pt.
 
-Overfull \hbox (38.19937pt too wide) in paragraph at lines 519--532
+Overfull \hbox (38.19937pt too wide) in paragraph at lines 520--533
 [] 
  []
 
@@ -1724,101 +1736,101 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [5 <./images/betriebssystemkern.png>]
-<images/unterbrechung_ohne_bs.png, id=73, 685.8122pt x 504.38437pt>
+<images/unterbrechung_ohne_bs.png, id=75, 685.8122pt x 504.38437pt>
 File: images/unterbrechung_ohne_bs.png Graphic file (type png)
 <use images/unterbrechung_ohne_bs.png>
 Package pdftex.def Info: images/unterbrechung_ohne_bs.png  used on input line 5
-43.
+44.
 (pdftex.def)             Requested size: 274.32002pt x 201.75017pt.
 
-Overfull \hbox (37.46608pt too wide) in paragraph at lines 540--563
+Overfull \hbox (37.46608pt too wide) in paragraph at lines 541--564
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 540--563
+Underfull \hbox (badness 10000) in paragraph at lines 541--564
 
  []
 
-<images/unterbrechung_mit_bs.png, id=74, 830.35219pt x 590.205pt>
+<images/unterbrechung_mit_bs.png, id=76, 830.35219pt x 590.205pt>
 File: images/unterbrechung_mit_bs.png Graphic file (type png)
 <use images/unterbrechung_mit_bs.png>
 Package pdftex.def Info: images/unterbrechung_mit_bs.png  used on input line 56
-7.
+8.
 (pdftex.def)             Requested size: 332.135pt x 236.0778pt.
 
-Overfull \hbox (59.06012pt too wide) in paragraph at lines 564--590
+Overfull \hbox (59.06012pt too wide) in paragraph at lines 565--591
  [] 
  []
 
 LaTeX Font Info:    Font shape `T1/neohellenic/m/n' will be
-(Font)              scaled to size 8.57504pt on input line 590.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 591.
+(Font)              scaled to size 8.57504pt on input line 591.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 592.
 (D:\Programme\MiKTeX\tex/latex/psnfss\t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 LaTeX Font Info:    Try loading font information for OMS+neohellenic on input l
-ine 591.
-LaTeX Font Info:    No file OMSneohellenic.fd. on input line 591.
+ine 592.
+LaTeX Font Info:    No file OMSneohellenic.fd. on input line 592.
 
 
 LaTeX Font Warning: Font shape `OMS/neohellenic/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textasteriskcentered' on input line 591.
+(Font)              for symbol `textasteriskcentered' on input line 592.
 
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [6 <./images/unterbrechung_ohne_bs.png> <./images/unterbrechung_mit_bs.png>]
-<images/taskzustaende.png, id=98, 514.17094pt x 380.17032pt>
+<images/taskzustaende.png, id=100, 514.17094pt x 380.17032pt>
 File: images/taskzustaende.png Graphic file (type png)
 <use images/taskzustaende.png>
-Package pdftex.def Info: images/taskzustaende.png  used on input line 610.
+Package pdftex.def Info: images/taskzustaende.png  used on input line 611.
 (pdftex.def)             Requested size: 192.81363pt x 142.5635pt.
-<images/threads.png, id=99, 692.5875pt x 322.20375pt>
+<images/threads.png, id=101, 692.5875pt x 322.20375pt>
 File: images/threads.png Graphic file (type png)
 <use images/threads.png>
-Package pdftex.def Info: images/threads.png  used on input line 620.
+Package pdftex.def Info: images/threads.png  used on input line 621.
 (pdftex.def)             Requested size: 294.35107pt x 136.93723pt.
 
-Overfull \hbox (20.19621pt too wide) in paragraph at lines 608--622
+Overfull \hbox (20.19621pt too wide) in paragraph at lines 609--623
 [] 
  []
 
 LaTeX Font Info:    Font shape `T1/neohellenic/m/n' will be
-(Font)              scaled to size 7.35004pt on input line 646.
+(Font)              scaled to size 7.35004pt on input line 647.
 LaTeX Font Info:    Font shape `T1/neohellenic/m/n' will be
-(Font)              scaled to size 6.12503pt on input line 646.
+(Font)              scaled to size 6.12503pt on input line 647.
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [7 <./images/taskzustaende.png> <./images/threads.png>]
-<images/mmu.png, id=125, 481.8pt x 311.66437pt>
+<images/mmu.png, id=127, 481.8pt x 311.66437pt>
 File: images/mmu.png Graphic file (type png)
 <use images/mmu.png>
-Package pdftex.def Info: images/mmu.png  used on input line 668.
+Package pdftex.def Info: images/mmu.png  used on input line 669.
 (pdftex.def)             Requested size: 180.67455pt x 116.87384pt.
 
-Overfull \hbox (65.39972pt too wide) in paragraph at lines 667--678
+Overfull \hbox (65.39972pt too wide) in paragraph at lines 668--679
 [] 
  []
 
 LaTeX Font Info:    Try loading font information for U+neohellenicnums on input
- line 695.
+ line 696.
 
 (C:\Users\Standardbenutzer\AppData\Roaming\MiKTeX\2.9\tex/latex/gfsneohellenic\
 uneohellenicnums.fd)
 LaTeX Font Info:    Font shape `U/neohellenicnums/m/tabnums' will be
-(Font)              scaled to size 9.80005pt on input line 695.
+(Font)              scaled to size 9.80005pt on input line 696.
 
-Overfull \hbox (26.0197pt too wide) in paragraph at lines 704--706
+Overfull \hbox (26.0197pt too wide) in paragraph at lines 705--707
 [] 
  []
 
 
-Overfull \hbox (21.35355pt too wide) in paragraph at lines 708--717
+Overfull \hbox (21.35355pt too wide) in paragraph at lines 709--718
 [] 
  []
 
@@ -1827,17 +1839,17 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [8 <./images/mmu.png>]
-Overfull \hbox (39.70934pt too wide) in paragraph at lines 751--758
+Overfull \hbox (39.70934pt too wide) in paragraph at lines 752--759
 [] 
  []
 
-<images/geraetezugriff.png, id=133, 632.3625pt x 545.78906pt>
+<images/geraetezugriff.png, id=135, 632.3625pt x 545.78906pt>
 File: images/geraetezugriff.png Graphic file (type png)
 <use images/geraetezugriff.png>
-Package pdftex.def Info: images/geraetezugriff.png  used on input line 779.
+Package pdftex.def Info: images/geraetezugriff.png  used on input line 780.
 (pdftex.def)             Requested size: 300.3753pt x 259.25249pt.
 
-Overfull \hbox (75.36952pt too wide) in paragraph at lines 776--804
+Overfull \hbox (75.36952pt too wide) in paragraph at lines 777--805
  [] 
  []
 
@@ -1846,23 +1858,23 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [9 <./images/geraetezugriff.png>]
-<images/latenz.png, id=140, 740.0147pt x 287.57437pt>
+<images/latenz.png, id=142, 740.0147pt x 287.57437pt>
 File: images/latenz.png Graphic file (type png)
 <use images/latenz.png>
-Package pdftex.def Info: images/latenz.png  used on input line 814.
+Package pdftex.def Info: images/latenz.png  used on input line 815.
 (pdftex.def)             Requested size: 240.50192pt x 93.46056pt.
 
-Overfull \hbox (73.1564pt too wide) in paragraph at lines 812--829
+Overfull \hbox (73.1564pt too wide) in paragraph at lines 813--830
 [] 
  []
 
 
-Overfull \hbox (19.91321pt too wide) in paragraph at lines 843--862
+Overfull \hbox (19.91321pt too wide) in paragraph at lines 844--863
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 865--867
+Underfull \hbox (badness 10000) in paragraph at lines 866--868
 
  []
 
@@ -1871,27 +1883,27 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [10 <./images/latenz.png>]
-Overfull \hbox (20.08614pt too wide) in paragraph at lines 923--925
+Overfull \hbox (20.08614pt too wide) in paragraph at lines 924--926
 [] 
  []
 
 
-Overfull \hbox (18.64311pt too wide) in paragraph at lines 930--933
+Overfull \hbox (18.64311pt too wide) in paragraph at lines 931--934
 [] 
  []
 
 
-Overfull \hbox (13.58578pt too wide) in paragraph at lines 935--941
+Overfull \hbox (13.58578pt too wide) in paragraph at lines 936--942
 [] 
  []
 
 
-Overfull \hbox (33.3873pt too wide) in paragraph at lines 951--955
+Overfull \hbox (33.3873pt too wide) in paragraph at lines 952--956
 [] 
  []
 
 
-Overfull \hbox (70.47034pt too wide) in paragraph at lines 951--955
+Overfull \hbox (70.47034pt too wide) in paragraph at lines 952--956
 [] 
  []
 
@@ -1900,74 +1912,74 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [11]
-<images/zustandsautomat.png, id=151, 340.27126pt x 234.1247pt>
+<images/zustandsautomat.png, id=153, 340.27126pt x 234.1247pt>
 File: images/zustandsautomat.png Graphic file (type png)
 <use images/zustandsautomat.png>
-Package pdftex.def Info: images/zustandsautomat.png  used on input line 969.
+Package pdftex.def Info: images/zustandsautomat.png  used on input line 970.
 (pdftex.def)             Requested size: 136.10608pt x 93.64821pt.
 
-Overfull \hbox (68.41693pt too wide) in paragraph at lines 968--979
+Overfull \hbox (68.41693pt too wide) in paragraph at lines 969--980
 [] 
  []
 
-<images/pathfinder_01.png, id=152, 898.85812pt x 499.8675pt>
+<images/pathfinder_01.png, id=154, 898.85812pt x 499.8675pt>
 File: images/pathfinder_01.png Graphic file (type png)
 <use images/pathfinder_01.png>
-Package pdftex.def Info: images/pathfinder_01.png  used on input line 991.
+Package pdftex.def Info: images/pathfinder_01.png  used on input line 992.
 (pdftex.def)             Requested size: 294.37476pt x 163.70589pt.
 
-Overfull \hbox (77.56851pt too wide) in paragraph at lines 990--1011
+Overfull \hbox (77.56851pt too wide) in paragraph at lines 991--1012
 [] 
  []
 
 
-Overfull \hbox (17.30742pt too wide) in paragraph at lines 1020--1021
+Overfull \hbox (17.30742pt too wide) in paragraph at lines 1021--1022
 [][] 
  []
 
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 1025.
+nput line 1026.
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [12 <./images/zustandsautomat.png> <./images/pathfinder_01.png>]
-Overfull \hbox (12.40013pt too wide) in paragraph at lines 1045--1052
+Overfull \hbox (12.40013pt too wide) in paragraph at lines 1046--1053
 []\T1/neohellenic/m/n/8 , 
  []
 
 
-Overfull \hbox (11.72083pt too wide) in paragraph at lines 1076--1082
+Overfull \hbox (11.72083pt too wide) in paragraph at lines 1077--1083
 [] 
  []
 
 
-Overfull \hbox (33.40382pt too wide) in paragraph at lines 1076--1082
+Overfull \hbox (33.40382pt too wide) in paragraph at lines 1077--1083
 [] 
  []
 
-<images/pathfinder_02.png, id=174, 688.07062pt x 514.92375pt>
+<images/pathfinder_02.png, id=176, 688.07062pt x 514.92375pt>
 File: images/pathfinder_02.png Graphic file (type png)
 <use images/pathfinder_02.png>
-Package pdftex.def Info: images/pathfinder_02.png  used on input line 1087.
+Package pdftex.def Info: images/pathfinder_02.png  used on input line 1088.
 (pdftex.def)             Requested size: 225.34215pt x 168.6368pt.
 
-Overfull \hbox (67.48505pt too wide) in paragraph at lines 1086--1105
+Overfull \hbox (67.48505pt too wide) in paragraph at lines 1087--1106
 [] 
  []
 
 
-Overfull \hbox (26.16602pt too wide) in paragraph at lines 1113--1116
+Overfull \hbox (26.16602pt too wide) in paragraph at lines 1114--1117
 [] 
  []
 
 
-Overfull \hbox (12.43936pt too wide) in paragraph at lines 1123--1126
+Overfull \hbox (12.43936pt too wide) in paragraph at lines 1124--1127
 | [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1123--1126
+Underfull \hbox (badness 10000) in paragraph at lines 1124--1127
 
  []
 
@@ -1976,27 +1988,27 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [13 <./images/pathfinder_02.png>]
-Overfull \hbox (4.3935pt too wide) in paragraph at lines 1134--1140
+Overfull \hbox (4.3935pt too wide) in paragraph at lines 1135--1141
 [] 
  []
 
 LaTeX Font Info:    Font shape `OML/neohellenic/m/it' will be
-(Font)              scaled to size 8.57504pt on input line 1178.
+(Font)              scaled to size 8.57504pt on input line 1179.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 1178.
+(Font)              <7> on input line 1179.
 LaTeX Font Info:    Font shape `OT1/neohellenic/m/n' will be
-(Font)              scaled to size 8.57504pt on input line 1178.
+(Font)              scaled to size 8.57504pt on input line 1179.
 
 Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [14]
-Overfull \hbox (12.65169pt too wide) in paragraph at lines 1256--1259
+Overfull \hbox (12.65169pt too wide) in paragraph at lines 1257--1260
 []
  []
 
 
-Overfull \hbox (28.75328pt too wide) in paragraph at lines 1275--1280
+Overfull \hbox (28.75328pt too wide) in paragraph at lines 1276--1281
 [] 
  []
 
@@ -2005,11 +2017,11 @@ Overfull \vbox (1.79988pt too high) has occurred while \output is active []
 
 
 [15]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1290.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1290.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1291.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1291.
  (document.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1290.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1290.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1291.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1291.
 
 Package rerunfilecheck Info: File `document.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
@@ -2017,13 +2029,13 @@ Package rerunfilecheck Info: File `document.out' has not changed.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1290.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1291.
  ) 
 Here is how much of TeX's memory you used:
- 25196 strings out of 492895
- 459036 string characters out of 3137190
+ 25200 strings out of 492895
+ 459213 string characters out of 3137190
  839951 words of memory out of 3000000
- 28447 multiletter control sequences out of 15000+200000
+ 28450 multiletter control sequences out of 15000+200000
  40620 words of font info for 79 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,18n,100p,9089b,1443s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -2050,9 +2062,9 @@ fonts/type1/public/lm/lmr8.pfb><D:/Programme/MiKTeX/fonts/type1/public/lm/lmsy6
 .pfb><D:/Programme/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><D:/Programme/MiKTeX/
 fonts/type1/public/lm/lmsy8.pfb><D:/Programme/MiKTeX/fonts/type1/urw/courier/uc
 rr8a.pfb>
-Output written on document.pdf (15 pages, 1499496 bytes).
+Output written on document.pdf (15 pages, 1534054 bytes).
 PDF statistics:
- 462 PDF objects out of 1000 (max. 8388607)
+ 464 PDF objects out of 1000 (max. 8388607)
  152 named destinations out of 1000 (max. 500000)
- 423 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 428 words of extra memory for PDF output out of 10000 (max. 10000000)
 

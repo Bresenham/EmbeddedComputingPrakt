@@ -379,9 +379,13 @@ $\circ$ Unterbrechung einer Aufgabe muss durch einen Prozess zur Bearbeitung höh
 		$\circ$ $\rho = \sum_{i = 0}^{n}\frac{t_Vi}{t_Pi}$ := Gesamtauslastung bei $n$ Prozessen
 	}
 \end{tabular}
-$\circ$ \textbf{1. \textit{Echtzeitbedingung:}} Gesamtauslastung aller Prozesse $\leq$ 1 $\Leftrightarrow$ $\rho = \sum_{i = 0}^{n}\frac{t_Vi}{t_Pi} \leq 1$
+$\circ$ \textbf{1. \textit{Echtzeitbedingung:}} Gesamtauslastung aller Prozesse $\leq$ 1 $\Leftrightarrow$ $\rho = \sum_{i = 0}^{n}\frac{t_Vi}{t_Pi} \leq 1$\\
 
-\vspace*{-1.7em}
+$\circ$ \raisebox{-.5\height}{\includegraphics[scale=0.425]{images/echtzeitbetrieb_beispiel.png}}
+
+\newpage
+
+\vspace*{-3.5em}
 \subsubsection{Art von Rechenprozessen}
 \vspace*{-1.7em}
 $\circ$ \textit{zyklisch:} konstanter Abstand zwischen zwei Anforderungen\\
@@ -402,9 +406,6 @@ $\circ$ \textit{sporadisch:} ähnlich wie \textit{azyklisch} aber mit Untergrenze
 $\circ$ \textbf{2. \textit{Echtzeitbedingung:}} Um Aufgaben rechtzeitig zu erledigen, muss die Reaktionszeit zwischen der minimal\\
 \hspace*{1em}und maximal zulässigen Reaktionszeit liegen: $t_{Zmin} \leq t_{Rmin} \leq t_R \leq t_{Rmax} \leq t_{Zmax}$
 
-\newpage
-
-\vspace*{-2.5em}
 \subsection{Harte und weiche Echtzeit}
 \vspace*{-1.7em}
 \begin{tabular}{lc}
