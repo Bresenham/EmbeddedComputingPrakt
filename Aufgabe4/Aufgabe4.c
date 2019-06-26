@@ -56,9 +56,8 @@ void measure_useless_for_one_million(unsigned int msec) {
   Thread 1: Zykluszeit 4ms, Verarbeitungszeit 2ms
 */
 void* thread_1(void *arg) {
-printf("Thread_1 started...\r\n");
-  unsigned long counter = 1;
-  while(true) {
+	printf("Thread_1 started...\r\n");
+	unsigned long counter = 1;
 	struct timespec time_to_wait;
 	clock_gettime(CLOCK_REALTIME, &time_to_wait);
 	if(errno != EOK) {
@@ -73,28 +72,40 @@ printf("Thread_1 started...\r\n");
 		time_to_wait.tv_nsec -= 1000 * 1000 * 1000;
 	}
 
-	// Verarbeit 2ms
-	waste_msecs(2);
+	while(true) {
 
-	const int clk_nanosleep_return = clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &time_to_wait, NULL);
-	if(clk_nanosleep_return != 0) {
-		printf("clock_nanosleep returned %d\r\n", clk_nanosleep_return);
-		exit(-1);
-	}
 
-    // Alle 3 Takte wird von Task 1 eine Semaphore gesetzt
-    if(counter % 3 == 0) {
-    	// Setze Semaphore
-    	const int ret = sem_post(semaphore);
-    	if (ret != 0) {
-    		printf("Error @ sem_post: %s\r\n", strerror(errno));
-    	}
-    }
+		// Verarbeit 2ms
+		waste_msecs(2);
 
-    counter++;
-  }
+		const int clk_nanosleep_return = clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &time_to_wait, NULL);
+		if(clk_nanosleep_return != 0) {
+			printf("clock_nanosleep returned %d\r\n", clk_nanosleep_return);
+			exit(-1);
+		}
 
-  return NULL;
+
+
+		time_to_wait.tv_nsec += 4000 * 1000;
+		if(time_to_wait.tv_nsec >= 1000 * 1000 * 1000) {
+			time_to_wait.tv_sec += 1;
+			time_to_wait.tv_nsec -= 1000 * 1000 * 1000;
+		}
+
+		// Alle 3 Takte wird von Task 1 eine Semaphore gesetzt
+		if(counter % 3 == 0) {
+			// Setze Semaphore
+			const int ret = sem_post(semaphore);
+			if (ret != 0) {
+				printf("Error @ sem_post: %s\r\n", strerror(errno));
+			}
+		}
+
+		counter++;
+
+	  }
+
+	  return NULL;
 }
 
 /*
