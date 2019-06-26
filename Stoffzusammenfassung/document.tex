@@ -1288,4 +1288,176 @@ $\circ$ Im Regelfall am effizientesten; Zeitbasis (\textit{isochroner Modus} von
 	\end{tabular}
 \end{center}
 
+\newpage
+
+\vspace*{-2.75em}
+\subsection{Programmierstil}
+\vspace*{-1.75em}
+$\circ$ Zeitkritische Tasks mit \textbf{möglichst wenig} Systemaufrufe\\
+$\circ$ Zeitaufwändige Aufgaben in eigene Tasks auslagern $\Rightarrow$ Werden durch Scheduling des Threads in einzelne Aufgaben zerlegt\\
+$\circ$ Rekursion vermeiden \textbf{da Stack stark beschränkte Ressource} ist $\Rightarrow$ iterativ programmieren\\
+$\circ$ Keine Schleifen die im schlimmsten Fall \textbf{endlos} auf Event warten $\Rightarrow$ Abbruchbedingung mit maximaler Anzahl an Durchläufen\\
+$\circ$ Datenstrukturen statisch oder zur Initialisierungszeit allozieren - nicht erst zur Laufzeit $\Rightarrow$ \textbf{kein \textit{new}}\\
+\hspace*{1em}- nicht-deterministisches Verhalten der Speicherverwaltung \& eventuell kein Speicher mehr verfügbar\\
+$\circ$ Rückgabewerte von Funktionen und Return-Codes grundsätzlich \textbf{im kompletten Definitionsbereich} auswerten
+
+\newpage
+
+\vspace*{-2.5em}
+\section{Echtzeitnachweis}
+\subsection{Aufbau und Eigenschaften}
+\vspace*{-1.75em}
+$\circ$ Formaler Nachweis, dass \textbf{1. \& 2. Echtzeitbedingung} erfüllt ist\\
+$\circ$ Man geht vom \textbf{schlimmst-möglichen Fall} aus\\
+\hspace*{1em}- Prozess- bzw. Zykluszeiten möglichst kurz\\
+\hspace*{1em}- Verarbeitungszeit möglichst lang\\
+\hspace*{1em}- Alle Ereignisse treten gleichzeitig auf ($t = 0$)\\
+$\circ$ Ablauf\\
+\hspace*{1em}- Relevante Kenndaten des Prozesses ermitteln\\
+\hspace*{1em}\hspace*{1em}- Anforderungen, Minimale Prozesszeit, Minimale \& Maximale Reaktionszeit $t_{Zmin}$, Abhängigkeiten zwischen Ereignissen\\
+\hspace*{1em}- Maximale Verarbeitungszeit $t_{Vmax}$ (\textbf{WCET}) für jede Anforderung\\
+\hspace*{1em}- Auslastungsbedingung überprüfen\\
+\hspace*{1em}- Rechtzeitigkeitsbedingung verifizieren (Bestimmung von $t_{Rmin}$ \& $t_{Rmax}$)
+
+\subsection{Abschätzen der \textit{Worst Case Execution Time}: Messen}
+\vspace*{-1.75em}
+$\circ$ Messen durch Anweisungen im Code \begin{lstlisting}
+while(true) {
+	/* Warten auf Ereignis */
+	Zeitstempel t1 setzen
+	/* Verarbeitung */
+	Zeitstempel t2 setzen
+}
+\end{lstlisting}
+\hspace*{1em}- Vorteile: Sprachunabhängig \& einfach realisierbar\\
+\hspace*{1em}- Nachteile\\
+\hspace*{1em}\hspace*{1em}- Aussagekraft der Messung abhängig von vielen Randbedingungen (Cache, Prozesszustand, Schleifen)\\
+\hspace*{1em}\hspace*{1em}- Theoretisch wären sämtliche Kombinationen aus Inputdaten erforderlich (100\% Test-Abdeckung)\\
+\hspace*{1em}\hspace*{1em}- Produktiver Code auf Zielplattform (erst spät in der Entwicklung) oder Simulator erforderlich
+
+\subsection{Abschätzen der \textit{Worst Case Execution Time}: Analyse}
+\vspace*{-1.75em}
+$\circ$ Aus Quellcode wird Strukturgraph des Codestücks erstellt, mit Beschreibung der Hardware wird längster Pfad durch Graphen gesucht\\
+\hspace*{1em}- Vorteile\\
+\hspace*{1em}\hspace*{1em}- Analyse auch nach Codemodifikation schnell durchführbar\\
+\hspace*{1em}\hspace*{1em}- Frühzeitig ohne Zielhardware möglich\\
+\hspace*{1em}\hspace*{1em}- Größtmögliche Abdeckung des Inpus\\
+\hspace*{1em}- Nachteile\\
+\hspace*{1em}\hspace*{1em}- Komplexe Analysewerkzeuge erforderlich\\
+\hspace*{1em}\hspace*{1em}- Verifikation der Ergebnisse (stimmmt die Hardwarebeschreibung?)
+
+\subsection{Abschätzen der \textit{Best Case Execution Time} (BCET)}
+\vspace*{-1.75em}
+$\circ$ Erforderlich wenn Codesequenz nicht vor einer minimal zulässigen Reaktionszeit $t_{Zmin}$ abgearbeitet worden sein darf\\
+$\circ$ BCET = kürzester Pfad im Strukturgraphen\\
+$\circ$ Im Gegensatz zur WCET misst man bei möglichst geringer Systemlast
+
+\newpage
+
+\vspace*{-2.5em}
+\subsection{Grafische Bestimmung der maximalen Reaktionszeit $t_{Rmax}$}
+\vspace*{-1.75em}
+$\circ$ Kürzere Prozesszeit entspricht höhere Priorität (\textbf{Rate Monotonic}), d.h. der Prozess mit der längsten Prozesszeit ist derjenige,\\
+\hspace*{1em}mit der geringsten Priorität\\
+$\circ$ Bekannt sein muss\\
+\hspace*{1em}- zulässige Reaktionszeiten $t_{Zmin}$ und $t_{Zmax}$ für jeden Job\\
+\hspace*{1em}- Verarbeitungszeiten $t_v$, BCET und WCET für jeden Job\\
+$\circ$ Voraussetzung: \textbf{prioritätengesteuertes (preemptives) Scheduling} \& Ereignisse sind \textbf{unabhängig} voneinander\\
+$\circ$ \begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.3]{images/grafischer_echtzeitnachweis.png}} & \makecell[l]{
+		$\circ$ \textbf{X-Achse:} Zeit\\
+		$\circ$ \textbf{Y-Achse:} Noch zu erbringende Rechenzeit $S(t)$\\
+		\hspace*{1em}- S = aktuelle Systemlast\\
+		$\circ$ Rechenzeitanforderungen im Falle des \textit{Worst Case}\\
+		$\circ$ Bei ungestörter Abarbeitung bildet sich eine mit Steigung $-1$ fallende Gerade\\
+		$\circ$ Bei jeder Anforderung wird die Gerade um Verabeitungszeit $t_v$ nach oben verschoben\\
+		$\circ$ Der Schnittpunkt der Gerade mit der X-Achse entspricht der \textbf{maximalen Reaktionszeit} des\\
+		\hspace*{1em}\textbf{niedrigpriorsten} Prozesses\\
+		$\circ$ Um maximale Reaktionszeit des nächst-niedrigprioren Prozesses zu erhalten: X-Achse um $t_v$ des\\
+		\hspace*{1em}niedrigprioreren Prozesses \textbf{nach oben} verschieben\\
+		$\circ$ Zu jedem Zeitpunkt lässt sich ablesen, wie viel Rechenarbeit noch zu leisten ist
+	}
+\end{tabular}
+
+$\circ$ Es reicht aus, den Graph \textbf{eine Hyperperiode} lang zu betrachten, da dies der maximale Zyklus ist, ab dann beginnt alles von vorne\\
+\hspace*{1em}- Eine Hyperperiode ist das kleinste gemeinsame Vielfache der Prozesszeiten aller Prozesse
+
+$\circ$ \begin{tabular}{lc}
+	\raisebox{-.5\height}{\includegraphics[scale=0.3125]{images/beispiel_echtzeitnachweis.png}} & \makecell[l]{
+		$\circ$ \textbf{Job-1:} $t_v = 0.5ms$, $t_p = 1ms$\\
+		$\circ$ \textbf{Job-2:} $t_v = 2ms$, $t_P = 5ms$\\
+		$\circ$ Bei \textbf{4ms} ist der erste Schnittpunkte des Graphen mit der X-Achse, d.h. die\\
+		\hspace*{1em}maximale Reaktionszeit für den niedrigpriorsten Prozess (= Job-2) ist 4ms,\\
+		\hspace*{1em}da $4 < 5$ \textbf{ist das System echtzeitfähig}\\
+		$\circ$ Die \textbf{Hyperperiode} ist $kgV(1, 5) = 5$, d.h. das System muss\\
+		\hspace*{1em}maximal 5ms betrachtet werden
+	}
+\end{tabular}
+
+\newpage
+
+$\circ$ Beispiel für \begin{tabular}{|l|l|l|l|l|}
+	\hline
+	\textbf{Anforderung} & $t_v$ & $t_p$ & $t_{Zmax}$ & $t_{Zmin}$\\
+	\hline
+	1 & 10ms & 30ms & 30ms & 0ms\\
+	2 & 15ms & 45ms & 45ms & 0ms\\
+	3 & 15ms & 60ms & 60ms & 0ms\\
+	\hline
+\end{tabular} mit einer \textbf{Hyperperiode} $kgV(30, 45, 60) = 180ms$\\
+\begin{tikzpicture}[yscale=-1, scale=1.5] 
+	% 4x4 grid
+	\draw[step=0.25] (0, 0) grid (8, -4);
+	% origin point
+	\draw [color=blue, fill=blue] (0, 0) circle (0.05);
+	% x-axis
+	\draw [thick,->] (0, 0) -- (8.5, 0);
+	% y-axis
+	\draw [thick,->] (0, 0) -- (0, -4.5);
+	% x-axis label
+	\node at (9.5, 0.0) {t in ms};
+	% y-axis label
+	\node at (0, -5) {$S(t)$};
+	
+	\draw[line width = 0.45mm, -, color=black!30!green] (0, 0) -- (0, -2.0);
+	\draw[line width = 0.45mm, -, color=black!30!green] (0, -2.0) -- (1.5, -0.5);
+	\draw[line width = 0.45mm, -, color=black!30!green] (1.5, -0.5) -- (1.5, -1);
+	\draw[line width = 0.45mm, -, color=black!30!green] (1.5, -1) -- (2.25, -0.25);
+	\draw[line width = 0.45mm, -, color=black!30!green] (2.25, -0.25) -- (2.25, -1);
+	\draw[line width = 0.45mm, -, color=black!30!green] (2.25, -1) -- (3, -0.25);
+	\draw[line width = 0.45mm, -, color=black!30!green] (3, -0.25) -- (3, -1.5);
+	\draw[line width = 0.45mm, -, color=black!30!green] (3, -1.5) -- (4.5, 0.0);
+	\draw [color=blue, fill=blue] (4.5, 0) circle (0.05);
+	
+	\draw[line width = 0.45mm, -, color=black!30!blue] (0.0, -0.75) -- (8, -0.75);
+	\draw [color=blue, fill=red] (1.25, -0.75) circle (0.05);
+	
+	\draw[line width = 0.45mm, -, color=black!30!red] (0.0, -1.5) -- (8, -1.5);
+	\draw [color=blue, fill=blue] (0.5, -1.5) circle (0.05);
+\end{tikzpicture}
+
+$\circ$ Durch den Schnittpunkt des grünen Graphen mit der X-Achse bei $t = 90ms$ ergibt sich für die maximale\\
+\hspace*{1em}Reaktionszeit für Job-3 = 90ms, da $90ms > 60ms$ ist das System \textbf{nicht echtzeitfähig}\\
+$\circ$ Die blaue Gerade ist die Verschiebung der X-Achse nach oben, wenn Job-3 nicht berücksichtigt wird\\
+\hspace*{1em}- die maximale Reaktionszeit für Job-2 = 25ms, da $25ms < 45ms$ ist das System \textbf{echtzeitfähig}\\
+$\circ$ Die rote Gerade ist die Verschiebung der X-Achse, wenn weder Job-3 noch Job-2 berücksichtigt werden\\
+\hspace*{1em}- die maximale Reaktionszeit für Job-1 = 10ms, da $10ms < 30ms$ ist das System \textbf{echtzeitfähig}
+
+\subsection{Hinreichende Schedulingbedingung}
+\vspace*{-1.75em}
+$\circ$ Voraussetzungen\\
+\hspace*{1em}- Scheduling mit statischen Prioritäten (\textbf{Rate Monotonic}) - wie oben\\
+\hspace*{1em}- Zyklische Tasks ohne Abhängigkeiten\\
+\hspace*{1em}- $t_{Zmax} = t_p$\\
+\hspace*{1em}- Falls $t_{Zmax} < t_p$: Maximal zulässige Reaktionszeit durch entsprechende\\
+\hspace*{1em}\hspace*{1em}Prozesszeit modellieren: $min(t_{Zmax}, t_p)$\\
+$\circ$ Aussage: Falls Bedingung für Auslastung erfüllt, wird jeder Task innerhalb seiner Prozesszeit fertig, somit ist \textbf{Rechtzeitigkeit erfüllt}\\
+\hspace*{1em}- Falls nicht, kann die Rechtzeitigkeit eventuell trotzdem erfüllt sein\\
+\hspace*{1em}- Es ist dann keine genauere Analyse (graphisch, mathematisch) erforderlich
+$$\mu = \sum_{k = 1}^{i} \frac{t_{Vk}}{min(t_{Zmax}, t_{Pk})} \leq i\cdot (2^{\frac{1}{i}} - 1)$$
+$\circ$ Mit zunehmender Prozesszahl $i\rightarrow \infty$ nähert sich die Auslastungsgrenze \textbf{69.3\%} an
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.165]{images/hinreichende_schedulingbedingung.png}}
+\end{center}
+
 \end{document}
