@@ -1460,4 +1460,119 @@ $\circ$ Mit zunehmender Prozesszahl $i\rightarrow \infty$ nähert sich die Auslas
 	\raisebox{-.5\height}{\includegraphics[scale=0.165]{images/hinreichende_schedulingbedingung.png}}
 \end{center}
 
+\newpage
+
+\vspace*{-2.5em}
+\section{Scheduling}
+\vspace*{-1.75em}
+$\circ$ Zu gegebenen Paaren \textit{(Anforderung, Zeit)} soll Reihenfolge der Abarbeitung gefunden werden, sodass für alle\\
+\hspace*{1em}die \textbf{Rechtzeitigkeitsbedingung erfüllt ist}\\
+$\circ$ \textbf{Scheduling Points:}  Scheduler prüft, ob anderer Prozess CPU erhalten sollte und veranlasst ggf. Kontextwechsel\\
+\hspace*{1em}- Am Ende einer Systemfunktion (Übergang Kernel/User Mode): In Systemfunktion sind Prioritäten geändert worden\\
+\hspace*{1em}- Durch Interrupts: Timer- oder I/O Interrupt\\
+$\circ$ \textbf{Bewertungskriterien}\\
+\hspace*{1em}- Gerechtigkeit (Jeder Prozess erhält \textit{fairen} CPU-Anteil)\\
+\hspace*{1em}- Effizient (möglichst gute Auslastung der CPU)\\
+\hspace*{1em}- Durchlaufzeit (Prozess so schnell wie möglich abschließen)\\
+\hspace*{1em}- Durchsatz (so viele Jobs wie möglich ausführen)\\
+\hspace*{1em}- Antwortzeit (möglichst schnelle Reaktion auf Ereignisse) - wichtig bei Echtzeit-Betriebssystem!\\
+\hspace*{1em}- Determinismus (Scheduling soll \textit{berechenbar} sein) - wichtig bei Echtzeit-Betriebssystem!
+\subsection{Statisches Scheduling}
+\vspace*{-1.75em}
+$\circ$ \textit{Fahrplan}, der im Vorhinein festgelegt wird - festes Schema, nach dem die einzelnen Rechenprozesse abzuarbeiten sind\\
+$\circ$ Verwendet für zyklische, sicherheitskritische Anwendungen mit fixen Zeitpunkten (z.B. Flugzeug-Steuerung)\\
+$\circ$ Formaler Nachweis der Einhaltung von Realzeitbedingungen möglich
+
+\subsection{Dynamisches Scheduling}
+\vspace*{-1.75em}
+$\circ$ Rechenprozesse erhalten den Prozessor aufgrund der jeweils aktuellen Bedarfssituation\\
+$\circ$ Rechenprozesse müssen unterbrechbar (\textit{praeemptiv}) sein
+
+\subsection{Beispiel}
+\vspace*{-1.75em}
+$\circ$ \textbf{Task 1:} Alle 1500ms Messdaten aufnehmen ($t_p = 1500$ms), muss nach 400ms abgeschlossen sein ($t_{Zmax} = 400$ms)\\
+$\circ$ \textbf{Task 2:} Messergebnisse innerhalb von $t_{Zmax} = 1100$ms zur Erde weiterleiten - alle 60s ($t_p = 60000$ms)\\
+$\circ$ \textbf{Task 3:} Alle 200ms nach Start der Messdatenaufnahme soll Experiment angestoßen werden, die Vorbereitungen dafür müssen\\
+\hspace*{1em}spätestens 500ms später abgeschlossen sein ($t_{Zmax} = 500$ms) - also 700ms nach dem Start der Messwertaufnahme. $t_p = 1500$ms\\
+$\circ$ Task 1 $t_v = 250$ms, Task 2 $t_v = 500$ms, Task 3 $t_v = 300$ms
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.135]{images/scheduling_beispiel.png}}
+\end{center}
+
+\subsection{Schedulingstrategien}
+\vspace*{-1.75em}
+$\circ$ \textbf{First Come First Serve}\\
+\hspace*{1em}- Prozesse werden entsprechend ihres Erzeugungspunktes in die Warteschlange eingereiht\\
+\hspace*{1em}- Jeder Prozess darf \textbf{bis zu seinem Ende} laufen (außer er blockiert zwischendurch)\\
+\hspace*{1em}- Wenn ein Prozess \textit{bereit} wird, fügt man ihn entsprechend seines Erzeugungspunktes in die Warteschlange ein\\
+\hspace*{1em}$\Rightarrow$ \textbf{Nicht} für Realzeitsysteme geeignet, da ein Prozess alle anderen blockieren kann
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.165]{images/first_come_first_serve.png}}
+\end{center}
+
+\newpage
+
+$\circ$ \textbf{Round Robin Scheduling}\\
+\hspace*{1em}- Prozesse in Warteschlange einreihen, jeder erhält Zeitscheibe (\textit{Quantum})\\
+\hspace*{1em}- Nach Ablauf seines Quantums, wird einem noch aktiven Prozess die CPU entzogen und er wird am Ende\\
+\hspace*{1em}\hspace*{1em}der Warteschlange eingereiht\\
+\hspace*{1em}- Anschließend erhält der nächste Prozess in der Warteschlange die CPU\\
+\hspace*{1em}- Abwägen des Quantums (lange Verzögerungszeiten vs. vernünftiges Verhältnis zu Kontextwechsel)\\
+\hspace*{1em}- Im dynamischen Scheduling Abarbeitungszeitpunkt eines Prozesses nicht vorhersagbar $\Rightarrow$ \textbf{Nicht} für Realzeitsysteme geeignet\\
+\hspace*{1em}- Im statischen Scheduling sind Zeitscheiben fest, wenn Anzahl Prozesse von vornherein bekannt, eignet es sich eventuell
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.21]{images/round_robin.png}}
+\end{center}
+
+$\circ$ \textbf{Prioritätengesteuertes Scheduling}\\
+\hspace*{1em}- Jeder Prozess erhält Priorität, Prozess mit höchster Priorität erhält CPU\\
+\hspace*{1em}- Für Realzeitsysteme \textbf{geeignet} - kritisch: Wahl der Prioritäten
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.21]{images/prioritaeten_scheduling.png}}
+\end{center}
+
+$\circ$ \textbf{Deadline-Scheduling}\\
+\hspace*{1em}- Der Prozess mit der am nächsten gelegenen Deadline (\textbf{maximal zulässige Reaktionoszeit}) erhält die CPU\\
+\hspace*{1em}- Prozesse müssen dem Scheduler ihre Deadline bekannt geben (ggf. nicht immer bekannt)\\
+\hspace*{1em}- Findet einen Weg zur Einhaltung der maximalen Reaktionszeit (falls es einen gibt), d.h. es ist für Realzeitsysteme \textbf{geeignet}
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.21]{images/deadline_scheduling.png}}
+\end{center}
+
+$\circ$ \textbf{POSIX 1003.1b}\\
+\hspace*{1em}- Prioritätengesteuert, innerhalb einer Prioritätsebene scheduling nach: \textit{FIFO/Round Robin}\\
+\hspace*{1em}- \textbf{FIFO} geeigneter bei Prozessen mit kurzer Verarbeitungszeit (I/O intensiv), \textbf{Round Robin} bei langer Verarbeitungszeit (CPU intensiv)\\
+\hspace*{1em}- Priorität 0 ist niedrigste Priorität\\
+\hspace*{1em}- Prioritätenzuteilung nach \textbf{Rate Monotonic} (je kürzer Prozesszeit $t_p$ desto kleiner im Regelfall die Verarbeitungszeit $t_v$ und\\
+\hspace*{1em}\hspace*{1em}desto höher die Priorität) - CPU intensive bekommen niedrige, I/O intensive hohe Priorität
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.11]{images/posix_scheduling.png}}
+\end{center}
+
+\newpage
+
+$\circ$ \textbf{POSIX 1003.1b Sporadic Scheduling}\\
+\hspace*{1em}- \textbf{Erkennt Probleme:} Nicht alle Tasks sind zyklisch, \textbf{Deadlines sagen nichts über Auslastung aus} (beliebige Prozesszeiten möglich),\\
+\hspace*{1em}\hspace*{1em}nur mit Prioritäten kein Echtzeitnachweis möglich (bis auf triviale Fälle)\\
+\hspace*{1em}- \textbf{Hat Lösungen:} Tasks mit unbekannter Prozesszeit (\textit{azyklisch} / \textit{gelegentlich}) als zyklischen Task modellieren, bei dem im Falle\\
+\hspace*{1em}\hspace*{1em}einer \textit{Prozesszeitverletzung} \textbf{die Priorität herabgesetzt wird}, zyklische Tasks erhalten \textbf{minimale} Prozess- und Verarbeitungszeit\\
+\hspace*{1em}- Sporadische Tasks werden definiert mit: \textbf{Priorität}, (angenommener) \textbf{Prozesszeit} (\textit{Replenishment Period}),\\
+\hspace*{1em}\hspace*{1em}(erlaubter) \textbf{Verarbeitungszeit pro Takt} (\textit{C}), und \textit{Zurueckstufungsprioritaet}\\
+\hspace*{1em}- System begrenzt Anzahl an \textit{Replenishments} um Systemoverhead niedrig zu halten\\
+\hspace*{1em}- Sporadische Tasks, die erlaubtes Kontingent überschreiten, beeinflussen das Gesamtsystem \textbf{nicht negativ}\\
+\hspace*{1em}- Alle Prozesse sind \textit{zyklische Prozesse} $\Rightarrow$ Echtzeitnachweis ganz einfach mit \textit{Hinreichender Schedulingbedingung}
+\vspace*{-1.75em}
+\begin{center}
+	\raisebox{-.5\height}{\includegraphics[scale=0.175]{images/sporadic_scheduling.png}}
+\end{center}
+
+
+
+
 \end{document}
